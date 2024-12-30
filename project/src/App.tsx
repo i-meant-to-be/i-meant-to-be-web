@@ -1,12 +1,9 @@
-import { useState } from 'react'
-
 export default function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div>
-      <h1 className="text-sky-300">Hello, Vite + React!</h1>
-      <button onClick={() => setCount((count) => count + 1)}>count is: {count}</button>
+ return (
+    <div className="min-h-screen w-screen flex justify-center items-center">
+      <div className="m-4 px-10 py-4 bg-gradient-to-r from-gd1/90 to-gd2/90 rounded-full shadow-2xl">
+        <h1 className="text-2xl text-onGd font-bold">{"imeanttobe <t>"}</h1>
+      </div>
     </div>
   )
 }
