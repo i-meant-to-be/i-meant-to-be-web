@@ -1,0 +1,34 @@
+name: CI (dev)
+
+on:
+  pull_request:
+    branches: ["develop"]
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies
+        working-directory: ./project
+        run: npm install
+
+      - name: Run linter
+        working-directory: ./project
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: ./project
+        run: npm run test
+
+      - name: Check whether commit can be built
+        working-directory: ./project
+        run: npm run build
