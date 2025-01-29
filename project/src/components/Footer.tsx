@@ -7,14 +7,14 @@ export default function Footer() {
         <div className="flex flex-row space-x-1">
           <button
             onClick={() =>
-              window.open(import.meta.env.VITE_INSTAGRAM_URL, '_blank')
+              window.open(import.meta.env.VITE_GITHUB_PROFILE_URL, '_blank')
             }
           >
             <IoLogoGithub size={32} className="hover:text-slate-400" />
           </button>
           <button
             onClick={() =>
-              window.open(import.meta.env.VITE_GITHUB_PROFILE_URL, '_blank')
+              window.open(import.meta.env.VITE_INSTAGRAM_URL, '_blank')
             }
           >
             <IoLogoInstagram size={32} className="hover:text-slate-400" />
