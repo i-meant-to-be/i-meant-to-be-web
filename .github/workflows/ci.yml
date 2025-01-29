@@ -1,8 +1,9 @@
 name: CI (dev)
 
 on:
+  workflow_dispatch:
   pull_request:
-    branches: ["develop"]
+    branches: ["dev"]
 
 jobs:
   CI:

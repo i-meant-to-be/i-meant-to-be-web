@@ -6,7 +6,6 @@ import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
-import tailwindcss from 'eslint-plugin-tailwindcss';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -26,7 +25,6 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       prettier: prettier,
-      tailwindcss: tailwindcss,
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -36,7 +34,6 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       'prettier/prettier': 'warn',
-      'tailwindcss/classnames-order': 'warn', // Tailwind CSS 클래스명 정렬 검사
       'react/react-in-jsx-scope': 'off',
     },
     settings: {
@@ -45,9 +42,6 @@ export default tseslint.config(
       },
       react: {
         version: 'detect',
-      },
-      tailwindcss: {
-        config: './tailwind.config.js', // Tailwind 설정 파일 위치 지정
       },
     },
   },
