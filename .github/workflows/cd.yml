@@ -28,29 +28,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2. Set up Node.js
+      # Step 2. Create .env file based on GitHub environment variables
+      - name: Setup .env
+        working-directory: ./project
+        run: echo "${{ vars.ENV }}" > .env
+
+      # Step 3. Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20.x"
 
-      # Step 3. Install dependencies
+      # Step 4. Install dependencies
       - name: Install dependencies
         working-directory: ./project
         run: npm install
 
-      # Step 4. Build the React app
+      # Step 5. Build the React app
       - name: Build the React app
         working-directory: ./project
         run: npm run build
 
-      # Step 5. Deploy the app to Azure Web Apps
+      # Step 6. Deploy the app to Azure Web Apps
       - name: Deploy the app to Azure Web Apps
         uses: azure/webapps-deploy@v3
         with:
           app-name: "i-meant-to-be-web"
           package: ./project/dist
 
-      # Step 6. Logout from Azure
+      # Step 7. Logout from Azure
       - name: Logout from Azure
         run: az logout
