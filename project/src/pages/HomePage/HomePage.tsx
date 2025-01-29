@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen select-none bg-slate-100">
       <div className="relative z-10 flex flex-col items-start px-10 py-32 font-noto-sans text-slate-200 md:px-20 md:py-40 ">
-        <div className="flex flex-wrap text-3xl font-extrabold leading-[1.8] md:text-6xl">
+        <div className="flex flex-wrap text-3xl font-extrabold leading-[1.8] md:text-5xl">
           {splitTextByWords('안녕하세요. 제 이름은')}
           <GradientButton
             text={'강시운'}
@@ -34,7 +34,7 @@ export default function HomePage() {
             className="hover:text-slate-900"
           />
           {splitTextByWords(
-            '를 아주 좋아합니다. 요즘은 집에서 드립 커피를 직접 내려 마시고 있어요. 짧지만 제 소개는 이 정도로 마무리할게요. 중간에 저와 관련된 외부 링크로 넘어가는 버튼을 몇 개 숨겨두었으니, 심심하면 찾아보셔도 좋을 것 같아요. 그럼, 여기까지 읽어주신 분들, 모두 좋은 하루 보내세요!',
+            '를 아주 좋아합니다. 집에서는 드립 커피를 직접 내려 마시고 있어요. 대한민국 각지에 있는 괜찮은 로스터리 카페들도 자주 찾아다니고 있습니다. 제 소개는 이 쯤에서 줄이겠습니다. 여기까지 찾아와주셔서 감사합니다. 좋은 하루 되세요.',
           )}
         </div>
 
