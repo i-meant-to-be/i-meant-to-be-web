@@ -1,9 +1,4 @@
 import Footer from '../../components/Footer';
-import {
-  GITHUB_PROFILE_URL,
-  INSTAGRAM_URL,
-  NAVER_MAP_URL,
-} from '../../util/urls';
 import GradientButton from './components/TextButton';
 
 function splitTextByWords(text: string) {
@@ -21,13 +16,13 @@ export default function HomePage() {
           {splitTextByWords('안녕하세요. 제 이름은')}
           <GradientButton
             text={'강시운'}
-            url={INSTAGRAM_URL}
+            url={import.meta.env.VITE_INSTAGRAM_URL}
             className="hover:text-slate-900"
           />
           {splitTextByWords('이에요. 저는 현재 중앙대학교에서 주전공으로 ')}
           <GradientButton
             text={'소프트웨어'}
-            url={GITHUB_PROFILE_URL}
+            url={import.meta.env.VITE_GITHUB_PROFILE_URL}
             className="hover:text-slate-900"
           />
           {splitTextByWords(
@@ -35,7 +30,7 @@ export default function HomePage() {
           )}
           <GradientButton
             text={'커피'}
-            url={NAVER_MAP_URL}
+            url={import.meta.env.VITE_NAVER_MAP_URL}
             className="hover:text-slate-900"
           />
           {splitTextByWords(
