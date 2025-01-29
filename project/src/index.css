@@ -1,25 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@font-face {
-  font-family: "Noto Sans Korean";
-  src: url("/fonts/NotoSansKR-Regular.ttf") format("truetype");
-  font-weight: regular;
+@theme {
+  --font-sans: 'Noto Sans Korean', sans-serif;
 }
 
 @font-face {
-  font-family: "Noto Sans Korean";
-  src: url("/fonts/NotoSansKR-ExtraBold.ttf") format("truetype");
-  font-weight: bold;
+  font-family: 'Noto Sans Korean';
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet');
+  font-weight: normal;
+  font-style: normal;
 }
 
-@font-face {
-  font-family: "Noto Sans Korean";
-  src: url("/fonts/NotoSansKR-Thin.ttf") format("truetype");
-  font-weight: thin;
-}
-
-body {
-  font-family: "Noto Sans Korean", sans-serif;
+@layer base {
+  p {
+    white-space: pre-wrap;
+  }
 }
