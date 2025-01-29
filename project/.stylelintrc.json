@@ -10,7 +10,8 @@
           "responsive",
           "screen",
           "tailwind",
-          "variants"
+          "variants",
+          "tailwindcss"
         ]
       }
     ],
