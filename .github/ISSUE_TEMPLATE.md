@@ -4,6 +4,7 @@ about: 새 이슈 식별
 title: "label: "
 labels: ""
 assignees: ""
+
 ---
 
 ## ✨ 설명
