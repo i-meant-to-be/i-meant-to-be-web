@@ -21,7 +21,7 @@ export default function Footer() {
           </button>
         </div>
 
-        <div className="flex flex-row font-light text-xs">
+        <div className="flex flex-wrap font-light text-xs">
           <p>이 웹 페이지는 </p>
           <button
             onClick={() =>
