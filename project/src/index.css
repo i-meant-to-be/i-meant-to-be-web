@@ -1,14 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Noto Sans Korean', sans-serif;
-}
+  --color-primary-cream: #fafaf3;
+  --color-primary-indigo: #0000a1;
+  --color-primary-indigo-enhance: #000054;
+  --color-on-cream: #3d3d3b;
+  --color-on-cream-enhance: #000000;
 
-@font-face {
-  font-family: 'Noto Sans Korean';
-  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet');
-  font-weight: normal;
-  font-style: normal;
+  --font-noto-sans-kr: 'Noto Sans KR', serif;
 }
 
 @keyframes gradient {
@@ -36,12 +36,17 @@
   p {
     white-space: pre-wrap;
   }
+}
 
-  .animated-gradient {
-    background: linear-gradient(270deg, #d9cba0, #feb47b);
-    background-size: 400% 400%;
-    animation: gradient 10s ease infinite;
-    animation: fadeIn 0.5s;
-    transition: background 0.5s;
+@layer components {
+  .gradient-button {
+    background: linear-gradient(to right, #0000a1, #0000a1);
+    background-size: 200% 100%;
+    background-position: left;
+    transition: background-position 0.3s ease-out;
+  }
+
+  .gradient-button:hover {
+    background-position: right;
   }
 }
