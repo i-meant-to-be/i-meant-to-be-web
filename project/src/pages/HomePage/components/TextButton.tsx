@@ -1,31 +1,12 @@
-import { useState } from 'react';
-
 interface TextLinkButtonProps {
   text: string;
-  className?: string;
   url?: string;
 }
 
-export default function GradientButton({
-  text,
-  className,
-  url,
-}: TextLinkButtonProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
+export default function TextButton({ text, url }: TextLinkButtonProps) {
   return (
     <button
-      className={`${className} ${isHovered ? 'animated-gradient' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className="bg-primary-indigo text-primary-cream hover:bg-primary-indigo-enhance"
       onClick={() => {
         if (url) {
           window.open(url, '_blank');
