@@ -6,7 +6,7 @@ interface TextLinkButtonProps {
 export default function TextButton({ text, url }: TextLinkButtonProps) {
   return (
     <button
-      className="bg-primary-indigo text-primary-cream hover:bg-primary-indigo-enhance"
+      className="bg-indigo text-cream hover:bg-indigo-enhanced transition-all"
       onClick={() => {
         if (url) {
           window.open(url, '_blank');
