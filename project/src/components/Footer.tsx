@@ -2,7 +2,7 @@ import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io5';
 
 export default function Footer() {
   return (
-    <footer className="pt-20">
+    <footer className="mt-32">
       <div className="flex flex-col space-y-3 items-start">
         <div className="flex flex-row space-x-1 text-on-cream">
           <button

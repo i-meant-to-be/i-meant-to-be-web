@@ -1,12 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary-cream: #fafaf3;
-  --color-primary-indigo: #0000a1;
-  --color-primary-indigo-enhance: #000054;
+  --color-cream: #fafaf3;
+  --color-indigo: #0000a1;
+  --color-indigo-enhanced: #000054;
+  --color-gold: #a18300;
+  --color-gold-enhanced: #7d6600;
   --color-on-cream: #3d3d3b;
-  --color-on-cream-enhance: #000000;
+  --color-content: #1a1a1a;
 
   --font-noto-sans-kr: 'Noto Sans KR', serif;
 }
@@ -49,4 +52,11 @@
   .gradient-button:hover {
     background-position: right;
   }
+}
+
+.noto-sans-kr {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
 }
