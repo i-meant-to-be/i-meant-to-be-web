@@ -1,4 +1,3 @@
-import { BiSolidCoffeeBean } from 'react-icons/bi';
 import {
   IoMusicalNotesSharp,
   IoPencilSharp,
