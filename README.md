@@ -1,4 +1,4 @@
-# i-meant-to-be-written
+# i-meant-to-be-web
 
 This project is for my personal web page.
 
