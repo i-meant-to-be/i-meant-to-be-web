@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #fafaf3;
+  --color-on-cream: #3d3d3b;
+  --color-on-cream-enhanced: #1a1a1a;
+  --color-indigo: #0000a1;
+  --color-indigo-enhanced: #000054;
+
+  --font-sans: "Noto Sans KR", sans-serif; 
+}
+
+@layer base {
+  body {
+    background-color: theme(colors.cream);
+    color: theme(colors.on-cream);
+  }
+
+  p {
+    white-space: pre-wrap;
+  }
+}

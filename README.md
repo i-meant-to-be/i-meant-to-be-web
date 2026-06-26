@@ -1,2 +1,9 @@
 # i-meant-to-be-written
-I meant to be written on here.
+
+This project is for my personal web page.
+
+## Tech stacks
+
+- React with TypeScript (for front-end)
+- Vercel (for deploying of web app)
+- GitHub Actions (for CI)
