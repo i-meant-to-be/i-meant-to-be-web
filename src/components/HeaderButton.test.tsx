@@ -10,7 +10,7 @@ describe('HeaderButton', () => {
 
     expect(markup).toContain('bg-indigo');
     expect(markup).toContain('text-cream');
-    expect(markup).not.toContain('border-indigo');
+    expect(markup).toContain('border-indigo');
   });
 
   it('uses an outlined style when not selected', () => {
