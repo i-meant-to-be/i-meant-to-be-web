@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/monitoring/script.js",
-      "destination": "/_vercel/insights/script.js"
+      "destination": "/favicons/favicon.ico"
     },
     {
       "source": "/monitoring/view",
@@ -11,10 +11,6 @@
     {
       "source": "/monitoring/event",
       "destination": "/_vercel/insights/event"
-    },
-    {
-      "source": "/monitoring/test",
-      "destination": "/favicons/favicon.ico"
     }
   ]
 }
