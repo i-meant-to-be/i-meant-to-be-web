@@ -19,5 +19,25 @@ const vitestConfig = defineVitestConfig({
 });
 
 export default defineViteConfig(() => {
-  return mergeConfig(viteConfig, vitestConfig);
+  const observabilityClientConfig =
+    process.env.VITE_VERCEL_OBSERVABILITY_CLIENT_CONFIG ??
+    process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG ??
+    process.env.VERCEL_OBSERVABILITY_CLIENT_CONFIG ??
+    '';
+
+  const observabilityBasePath =
+    process.env.VITE_VERCEL_OBSERVABILITY_BASEPATH ??
+    process.env.REACT_APP_VERCEL_OBSERVABILITY_BASEPATH ??
+    process.env.VERCEL_OBSERVABILITY_BASEPATH ??
+    '';
+
+  return mergeConfig(mergeConfig(viteConfig, vitestConfig), {
+    define: {
+      'process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG':
+        JSON.stringify(observabilityClientConfig),
+      'process.env.REACT_APP_VERCEL_OBSERVABILITY_BASEPATH': JSON.stringify(
+        observabilityBasePath,
+      ),
+    },
+  });
 });
