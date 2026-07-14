@@ -42,8 +42,34 @@ export default defineViteConfig(() => {
   });
 });
 
-console.log('Observability environment:', {
-  vite: Boolean(process.env.VITE_VERCEL_OBSERVABILITY_CLIENT_CONFIG),
-  react: Boolean(process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG),
-  raw: Boolean(process.env.VERCEL_OBSERVABILITY_CLIENT_CONFIG),
+function summarizeConfig(value: string | undefined) {
+  if (!value) {
+    return { present: false };
+  }
+
+  try {
+    const parsed = JSON.parse(value);
+
+    return {
+      present: true,
+      length: value.length,
+      validJson: true,
+      topLevelKeys: Object.keys(parsed ?? {}),
+      analyticsKeys: Object.keys(parsed?.analytics ?? {}),
+    };
+  } catch {
+    return {
+      present: true,
+      length: value.length,
+      validJson: false,
+    };
+  }
+}
+
+console.log('Observability config structure:', {
+  vite: summarizeConfig(process.env.VITE_VERCEL_OBSERVABILITY_CLIENT_CONFIG),
+  react: summarizeConfig(
+    process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG,
+  ),
+  raw: summarizeConfig(process.env.VERCEL_OBSERVABILITY_CLIENT_CONFIG),
 });
