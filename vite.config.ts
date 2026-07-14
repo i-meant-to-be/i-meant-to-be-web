@@ -18,6 +18,4 @@ const vitestConfig = defineVitestConfig({
   },
 });
 
-export default defineViteConfig(() => {
-  return mergeConfig(viteConfig, vitestConfig);
-});
+export default mergeConfig(viteConfig, vitestConfig);
