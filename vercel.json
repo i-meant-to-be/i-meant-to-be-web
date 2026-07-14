@@ -11,6 +11,10 @@
     {
       "source": "/monitoring/event",
       "destination": "/_vercel/insights/event"
+    },
+    {
+      "source": "/monitoring/test",
+      "destination": "/favicons/favicon.ico"
     }
   ]
 }
