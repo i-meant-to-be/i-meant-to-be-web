@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import HomePage from './HomePage';
-import '@testing-library/jest-dom';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 describe('HomePage', () => {
