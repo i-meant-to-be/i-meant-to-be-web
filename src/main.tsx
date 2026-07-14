@@ -9,7 +9,11 @@ export function App() {
   return (
     <StrictMode>
       <RouterProvider router={router} />
-      <Analytics />
+      <Analytics
+        configString={
+          import.meta.env.VITE_VERCEL_OBSERVABILITY_CLIENT_CONFIG
+        }
+      />
     </StrictMode>
   );
 }
