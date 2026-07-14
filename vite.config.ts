@@ -41,3 +41,9 @@ export default defineViteConfig(() => {
     },
   });
 });
+
+console.log('Observability environment:', {
+  vite: Boolean(process.env.VITE_VERCEL_OBSERVABILITY_CLIENT_CONFIG),
+  react: Boolean(process.env.REACT_APP_VERCEL_OBSERVABILITY_CLIENT_CONFIG),
+  raw: Boolean(process.env.VERCEL_OBSERVABILITY_CLIENT_CONFIG),
+});
