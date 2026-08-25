@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://imeantto.be/sitemap.xml
