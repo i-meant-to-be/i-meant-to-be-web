@@ -14,7 +14,6 @@ const seo: Record<string, RouteSeo> = {
   [routes.POST]: {
     title: '게시글',
     description: '흥미로울 게시글들 목록.',
-    noindex: true,
   },
   [routes.MUSIC]: {
     title: '음악',

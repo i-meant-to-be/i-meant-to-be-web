@@ -1,0 +1,77 @@
+/*
+ * rehype-highlight(highlight.js)가 코드 블럭에 주입하는 .hljs-* 토큰 클래스는 서드파티가 만드는
+ * 클래스명이라 Tailwind 유틸리티로 타게팅할 수 없다. 그래서 이 파일에서만 별도로 관리한다
+ * (docs/architecture/styling.md 참고).
+ *
+ * 아래 세 강조색은 코드 하이라이팅 전용이며(사이트 전역 브랜드 토큰인 src/index.css의 @theme와는
+ * 별개), 주 색상 indigo(#0000a1, HSL 240° 기준)와 남색을 제외하고 조화롭도록 고른 색이다.
+ *   - --hljs-rose  (약 350°, 웜톤): indigo의 보색(60°) 근처에서 살짝 비켜난 스플릿 컴플리멘터리
+ *   - --hljs-amber (약 28°,  웜톤): indigo와 삼각 배색(triadic, 240°→0°/120° 근방)의 웜 축
+ *   - --hljs-teal  (약 168°, 쿨톤): indigo의 삼각 배색 그린 축을 틸 쪽으로 다듬어 채도를 낮춘 색
+ * 세 색 모두 크림 배경(#fafaf3) 위에서 읽히도록 명도를 낮게(L 32~45%) 잡았다.
+ */
+
+:root {
+  --hljs-rose: #b3253f;
+  --hljs-amber: #b35a0f;
+  --hljs-teal: #1f7a66;
+}
+
+.hljs {
+  color: var(--color-on-cream);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--color-on-cream);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: var(--color-indigo);
+  font-weight: 700;
+}
+
+.hljs-string,
+.hljs-addition {
+  color: var(--hljs-rose);
+}
+
+.hljs-title,
+.hljs-name,
+.hljs-type,
+.hljs-attribute,
+.hljs-symbol,
+.hljs-bullet {
+  color: var(--hljs-teal);
+}
+
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-variable,
+.hljs-template-variable {
+  color: var(--hljs-amber);
+}
+
+.hljs-meta {
+  color: var(--color-on-cream-enhanced);
+}
+
+.hljs-deletion {
+  color: var(--color-on-cream);
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}

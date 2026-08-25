@@ -4,12 +4,19 @@ import seo from '../routes/seo';
 const SITE_URL = 'https://imeantto.be';
 const SITE_NAME = 'imeanttobe';
 
-interface SeoProps {
-  path: string;
+interface SeoOverride {
+  title: string;
+  description: string;
+  noindex?: boolean;
 }
 
-export default function Seo({ path }: SeoProps) {
-  const { title, description, noindex } = seo[path];
+interface SeoProps {
+  path: string;
+  override?: SeoOverride;
+}
+
+export default function Seo({ path, override }: SeoProps) {
+  const { title, description, noindex } = override ?? seo[path];
   const url = `${SITE_URL}${path}`;
   const fullTitle = path === '/' ? title : `${title} | ${SITE_NAME}`;
 

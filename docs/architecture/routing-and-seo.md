@@ -7,13 +7,13 @@
 
 | 파일                       | 책임                                                                              |
 | --------------------------- | ------------------------------------------------------------------------------------ |
-| `src/routes/route.ts`       | 라우트 경로 상수의 단일 소스 (`ROOT`, `POST`, `MUSIC`)                                |
+| `src/routes/route.ts`       | 라우트 경로 상수의 단일 소스 (`ROOT`, `POST`, `POST_DETAIL`, `MUSIC`)                 |
 | `src/routes/router.tsx`     | `createBrowserRouter`에 경로 ↔ 페이지 컴포넌트 등록                                  |
-| `src/routes/seo.ts`         | 라우트 경로별 `{ title, description, noindex }`의 단일 소스                          |
-| `src/components/Seo.tsx`    | `seo.ts`를 조회해 `react-helmet-async`로 title/description/robots/canonical/OG 렌더링 |
+| `src/routes/seo.ts`         | 정적 라우트별 `{ title, description, noindex }`의 단일 소스                          |
+| `src/components/Seo.tsx`    | `seo.ts`를 조회해 `react-helmet-async`로 title/description/robots/canonical/OG 렌더링. `override` prop이 있으면 `seo.ts` 조회 대신 이를 사용 (§3-1 참고) |
 | `vercel.json`               | Vercel에서 `/` 이외의 모든 경로를 `index.html`로 rewrite (SPA fallback)              |
 | `public/robots.txt`         | 크롤링 허용 범위와 sitemap 위치                                                       |
-| `public/sitemap.xml`        | 색인 대상 URL 목록 (noindex 페이지는 제외)                                            |
+| `public/sitemap.xml`        | **빌드타임에 자동 생성됨** (`scripts/generate-sitemap.mjs`, `npm run build`의 일부). 색인 대상 URL 목록 (noindex 페이지는 제외). 수동 편집 금지 — 직접 고친 내용은 다음 빌드에서 덮어써진다 |
 
 ## 2. 왜 vercel.json이 필요한가
 
@@ -39,14 +39,31 @@
 `<meta name="robots">`로 처리한다 — `robots.txt`로 막으면 Google이 크롤링 자체를 못 해서
 noindex 지시를 읽지 못하고, 외부 신호만으로 그 URL을 색인해버릴 수 있다.
 
+## 3-1. 동적 라우트의 SEO — `Seo`의 `override`
+
+`seo.ts`는 라우트 경로 문자열을 key로 쓰는 고정 매핑이라 `/post/:id`처럼 콘텐츠에 따라
+제목/설명이 달라지는 라우트에는 쓸 수 없다. 이런 경우 `Seo`에 `override={{ title, description,
+noindex? }}`를 넘기면 `seo.ts` 조회를 건너뛰고 이 값을 그대로 쓴다. `path` prop은 이 경우에도
+canonical/OG URL 생성을 위해 실제 접근 경로(예: `` `${routes.POST}/${id}` ``)를 넘긴다.
+
+예시는 `src/pages/PostDetailPage/PostDetailPage.tsx` 참고 — 게시물의 frontmatter(`title`,
+`description`)를 override로 넘기고, `draft: true`인 게시물은 `noindex: true`로 넘긴다. 존재하지
+않는 id는 `noindex: true` override와 함께 안내 문구만 렌더링한다 (별도 404 라우트는 없음).
+
+이 패턴을 쓰는 라우트는 `seo.ts`에 해당 경로 key를 추가하지 않는다 — `override`가 항상 필수이기
+때문이다.
+
 ## 4. 새 라우트 추가 체크리스트
 
 1. `route.ts`에 경로 상수 추가
 2. `router.tsx`에 페이지 컴포넌트 등록
-3. `src/pages/{Page}/{Page}.tsx` 생성, 최상위에 `<Seo path={routes.X} />` 추가
-4. `seo.ts`에 해당 경로의 `{ title, description, noindex? }` 추가
-5. 완성된 콘텐츠라면 `public/sitemap.xml`에 `<url><loc>` 추가 (완성 전이면 `noindex: true`만
-   두고 sitemap에는 넣지 않는다)
+3. `src/pages/{Page}/{Page}.tsx` 생성, 최상위에 `<Seo path={routes.X} />` 추가 (콘텐츠에 따라
+   제목/설명이 달라지는 동적 라우트라면 `override`도 함께 — §3-1 참고)
+4. 정적 라우트라면 `seo.ts`에 해당 경로의 `{ title, description, noindex? }` 추가 (동적 라우트는
+   이 단계를 건너뛴다)
+5. `public/sitemap.xml`은 `npm run build` 시 `scripts/generate-sitemap.mjs`가 자동 생성한다 —
+   정적 라우트를 새로 추가했다면 이 스크립트의 `STATIC_PATHS`에도 추가한다 (완성 전 라우트는
+   `noindex: true`만 두고 `STATIC_PATHS`에는 넣지 않는다)
 6. `Header.tsx`에 내비게이션이 필요하면 `NavLink`로 추가 (내부 라우트는 항상
    `Link`/`NavLink`만 쓴다 — `window.open`은 외부 링크 전용. `Footer.tsx`/`HomePage.tsx`의
    외부 링크 버튼 참고)
@@ -54,10 +71,13 @@ noindex 지시를 읽지 못하고, 외부 신호만으로 그 URL을 색인해�
 
 ## 5. 금지 사항
 
-- `seo.ts`를 거치지 않고 페이지 컴포넌트에 `<title>`이나 `<meta>`를 직접 쓰지 않는다.
+- `Seo`(`seo.ts` 조회 또는 `override` prop)를 거치지 않고 페이지 컴포넌트에 `<title>`이나
+  `<meta>`를 직접 쓰지 않는다.
 - `index.html`에 라우트별로 달라지는 태그(title/description/canonical/robots/og:title/
   og:description/og:url)를 다시 추가하지 않는다 — `Seo.tsx`와 중복된다.
 - `vercel.json`의 rewrite 규칙을 제거하거나, 특정 정적 파일만 예외 처리하려고 규칙을 좁히지
   않는다 (Vercel은 rewrite 전에 실제 정적 파일을 먼저 확인하므로 현재 규칙으로도
   `favicons/`, `assets/`는 이미 안전하다).
-- noindex 상태인 페이지를 `sitemap.xml`에 넣지 않는다.
+- noindex 상태인 페이지를 `scripts/generate-sitemap.mjs`의 대상에 넣지 않는다 (게시물은
+  `draft: true`로 표시하면 스크립트가 자동으로 제외한다).
+- `public/sitemap.xml`을 직접 수정하지 않는다 — 빌드 시 자동 재생성되어 덮어써진다.

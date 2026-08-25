@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import HomePage from '../pages/HomePage/HomePage';
 import routes from './route';
 import PostPage from '../pages/PostPage/PostPage';
+import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import MusicPage from '../pages/MusicPage/MusicPage';
 
 const router = createBrowserRouter([
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: routes.POST,
     element: <PostPage />,
+  },
+  {
+    path: routes.POST_DETAIL,
+    element: <PostDetailPage />,
   },
   {
     path: routes.MUSIC,
