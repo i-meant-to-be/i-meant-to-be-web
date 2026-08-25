@@ -8,7 +8,7 @@
   --color-indigo-enhanced: #000054;
 
   --font-sans: 'Noto Sans KR', sans-serif;
-  --font-mono: 'Cascadia Mono', sans-serif;
+  --font-mono: 'Cascadia Mono', monospace;
 }
 
 @layer base {

@@ -24,7 +24,6 @@
 .hljs-comment,
 .hljs-quote {
   color: var(--color-on-cream);
-  opacity: 0.6;
   font-style: italic;
 }
 
