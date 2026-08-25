@@ -4,6 +4,12 @@
     <loc>https://imeantto.be/</loc>
   </url>
   <url>
+    <loc>https://imeantto.be/post</loc>
+  </url>
+  <url>
     <loc>https://imeantto.be/music</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0001-hello-world</loc>
   </url>
 </urlset>
