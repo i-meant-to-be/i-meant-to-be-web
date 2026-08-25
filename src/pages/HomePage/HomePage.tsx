@@ -1,4 +1,6 @@
 import Layout from '../../components/Layout';
+import Seo from '../../components/Seo';
+import routes from '../../routes/route';
 import TextButton from './components/TextButton';
 
 type ContentItem = string | { text: string; url: string };
@@ -16,6 +18,7 @@ const contents: ContentItem[] = [
 export default function HomePage() {
   return (
     <Layout>
+      <Seo path={routes.ROOT} />
       <p className="text-3xl break-keep font-bold leading-[1.8] md:text-5xl">
         {contents.map((content, index) => {
           if (typeof content === 'string') return content;
