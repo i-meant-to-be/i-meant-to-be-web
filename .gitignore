@@ -26,7 +26,3 @@ dist-ssr
 # Local Properties
 **/*.env
 **/.env*
-
-# SDD related files
-specs
-.agents
