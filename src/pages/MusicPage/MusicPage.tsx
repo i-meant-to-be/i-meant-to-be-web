@@ -1,8 +1,11 @@
 import Layout from '../../components/Layout';
+import Seo from '../../components/Seo';
+import routes from '../../routes/route';
 
 export default function MusicPage() {
   return (
     <Layout>
+      <Seo path={routes.MUSIC} />
       <div className="relative w-full aspect-video">
         <iframe
           src="https://www.youtube-nocookie.com/embed/Tj-4gZ9fuGE?si=ZCnRzURS_Hn4vzsg"
