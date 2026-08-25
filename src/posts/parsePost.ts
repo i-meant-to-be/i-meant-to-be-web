@@ -12,6 +12,18 @@ export interface Post {
 }
 
 const FRONTMATTER_PATTERN = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/;
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+function isValidDate(value: string): boolean {
+  if (!DATE_PATTERN.test(value)) return false;
+  const [year, month, day] = value.split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
 
 function excerpt(content: string): string {
   const firstParagraph = content
@@ -64,6 +76,11 @@ export function parsePost(raw: string): Post {
   }
   if (typeof date !== 'string' || !date) {
     throw new Error('Post frontmatter is missing required field "date".');
+  }
+  if (!isValidDate(date)) {
+    throw new Error(
+      'Post frontmatter "date" must be a valid YYYY-MM-DD date.',
+    );
   }
 
   const description =

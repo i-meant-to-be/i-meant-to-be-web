@@ -68,4 +68,28 @@ description: 설명
   it('throws when there is no frontmatter block', () => {
     expect(() => parsePost('그냥 본문')).toThrow();
   });
+
+  it('throws when date is not in YYYY-MM-DD format', () => {
+    const raw = `---
+title: 제목
+date: 2025/01/01
+---
+
+본문
+`;
+
+    expect(() => parsePost(raw)).toThrow();
+  });
+
+  it('throws when date is not a real calendar date', () => {
+    const raw = `---
+title: 제목
+date: 2025-02-30
+---
+
+본문
+`;
+
+    expect(() => parsePost(raw)).toThrow();
+  });
 });

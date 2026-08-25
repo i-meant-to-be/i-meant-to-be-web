@@ -47,4 +47,36 @@ describe('extractHeadings', () => {
   it('returns an empty list when there are no headings', () => {
     expect(extractHeadings('그냥 문단입니다.')).toEqual([]);
   });
+
+  it('ignores headings inside tilde-fenced code blocks', () => {
+    const content = `
+## 진짜 제목
+
+~~~md
+# 코드 블럭 안의 가짜 제목
+~~~
+`;
+
+    expect(extractHeadings(content)).toEqual([
+      { depth: 2, text: '진짜 제목', slug: '진짜-제목' },
+    ]);
+  });
+
+  it('keeps a four-backtick block open across a three-backtick content line', () => {
+    const content = `
+## 진짜 제목
+
+\`\`\`\`md
+\`\`\`
+# 코드 블럭 안의 가짜 제목
+\`\`\`\`
+
+## 다음 제목
+`;
+
+    expect(extractHeadings(content)).toEqual([
+      { depth: 2, text: '진짜 제목', slug: '진짜-제목' },
+      { depth: 2, text: '다음 제목', slug: '다음-제목' },
+    ]);
+  });
 });

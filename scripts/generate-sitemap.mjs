@@ -12,7 +12,9 @@ const STATIC_PATHS = ['/', '/post', '/music'];
 function isDraft(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return false;
-  return /^draft:\s*true\s*$/m.test(match[1]);
+  const draftLine = match[1].match(/^draft:\s*(.*?)\s*$/m);
+  if (!draftLine) return false;
+  return draftLine[1].replace(/^["']|["']$/g, '') === 'true';
 }
 
 function getPostPaths() {

@@ -1,20 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
-import { IoCheckmarkSharp, IoShareSocialSharp } from 'react-icons/io5';
+import {
+  IoCheckmarkSharp,
+  IoCloseSharp,
+  IoShareSocialSharp,
+} from 'react-icons/io5';
 import BorderButton from '../../../components/BorderButton';
 
 const RESET_DELAY_MS = 2000;
 
+type Status = 'idle' | 'copied' | 'failed';
+
 export default function ShareButton() {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
   const resetTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => () => clearTimeout(resetTimeoutRef.current), []);
 
   const handleClick = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setStatus('copied');
+    } catch {
+      setStatus('failed');
+    }
     clearTimeout(resetTimeoutRef.current);
-    resetTimeoutRef.current = setTimeout(() => setCopied(false), RESET_DELAY_MS);
+    resetTimeoutRef.current = setTimeout(() => setStatus('idle'), RESET_DELAY_MS);
   };
 
   return (
@@ -23,7 +33,7 @@ export default function ShareButton() {
         <span className="grid">
           <span
             className={`col-start-1 row-start-1 flex flex-row items-center justify-center gap-2 ${
-              copied ? 'invisible' : ''
+              status === 'idle' ? '' : 'invisible'
             }`}
           >
             <IoShareSocialSharp className="h-full" aria-hidden="true" />
@@ -31,11 +41,19 @@ export default function ShareButton() {
           </span>
           <span
             className={`col-start-1 row-start-1 flex flex-row items-center justify-center gap-2 ${
-              copied ? '' : 'invisible'
+              status === 'copied' ? '' : 'invisible'
             }`}
           >
             <IoCheckmarkSharp className="h-full" aria-hidden="true" />
             복사됨
+          </span>
+          <span
+            className={`col-start-1 row-start-1 flex flex-row items-center justify-center gap-2 ${
+              status === 'failed' ? '' : 'invisible'
+            }`}
+          >
+            <IoCloseSharp className="h-full" aria-hidden="true" />
+            복사 실패
           </span>
         </span>
       </BorderButton>

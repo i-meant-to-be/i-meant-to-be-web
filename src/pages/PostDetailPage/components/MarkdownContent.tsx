@@ -10,18 +10,27 @@ interface MarkdownContentProps {
 }
 
 const components: Components = {
-  h1: ({ children }) => (
-    <h1 className="mt-10 text-3xl font-bold break-keep first:mt-0 md:mt-12 md:text-4xl">
+  h1: ({ id, children }) => (
+    <h1
+      id={id}
+      className="mt-10 text-3xl font-bold break-keep first:mt-0 md:mt-12 md:text-4xl"
+    >
       {children}
     </h1>
   ),
-  h2: ({ children }) => (
-    <h2 className="mt-8 text-2xl font-bold break-keep md:mt-10 md:text-3xl">
+  h2: ({ id, children }) => (
+    <h2
+      id={id}
+      className="mt-8 text-2xl font-bold break-keep md:mt-10 md:text-3xl"
+    >
       {children}
     </h2>
   ),
-  h3: ({ children }) => (
-    <h3 className="mt-6 text-xl font-bold break-keep md:mt-8 md:text-2xl">
+  h3: ({ id, children }) => (
+    <h3
+      id={id}
+      className="mt-6 text-xl font-bold break-keep md:mt-8 md:text-2xl"
+    >
       {children}
     </h3>
   ),

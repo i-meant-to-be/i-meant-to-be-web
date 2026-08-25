@@ -28,6 +28,18 @@ describe('PostDetailPage', () => {
     expect(screen.getByText(/테스트용 포스트입니다/)).toBeInTheDocument();
   });
 
+  it('renders a table of contents whose links resolve to real heading ids', () => {
+    renderAt('/post/0001-hello-world');
+
+    const tocLink = screen.getByRole('link', { name: '텍스트 스타일' });
+    const href = tocLink.getAttribute('href');
+    expect(href).toMatch(/^#/);
+
+    const heading = document.getElementById(href!.slice(1));
+    expect(heading).not.toBeNull();
+    expect(heading).toHaveTextContent('텍스트 스타일');
+  });
+
   it('shows a not-found message for an unknown id', () => {
     renderAt('/post/does-not-exist');
 

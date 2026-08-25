@@ -7,6 +7,7 @@ export interface Heading {
 }
 
 const HEADING_PATTERN = /^(#{1,6})\s+(.+?)\s*#*$/;
+const FENCE_PATTERN = /^(`{3,}|~{3,})/;
 const MAX_TOC_DEPTH = 3;
 
 function stripInlineMarkdown(text: string): string {
@@ -26,14 +27,20 @@ function stripInlineMarkdown(text: string): string {
 export function extractHeadings(content: string): Heading[] {
   const slugger = new GithubSlugger();
   const headings: Heading[] = [];
-  let inCodeBlock = false;
+  let openFence: { char: string; length: number } | null = null;
 
   for (const line of content.split(/\r?\n/)) {
-    if (/^```/.test(line.trim())) {
-      inCodeBlock = !inCodeBlock;
+    const fenceMatch = line.trim().match(FENCE_PATTERN);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (!openFence) {
+        openFence = { char: marker[0], length: marker.length };
+      } else if (marker[0] === openFence.char && marker.length >= openFence.length) {
+        openFence = null;
+      }
       continue;
     }
-    if (inCodeBlock) continue;
+    if (openFence) continue;
 
     const match = line.match(HEADING_PATTERN);
     if (!match) continue;
