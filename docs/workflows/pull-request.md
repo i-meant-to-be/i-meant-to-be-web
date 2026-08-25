@@ -8,7 +8,7 @@
 
 ## 1. 브랜치 이름
 
-```
+```text
 label/작업 내용 요약
 ```
 
@@ -19,7 +19,7 @@ label/작업 내용 요약
 
 ## 2. 커밋 메시지 형식
 
-```
+```text
 label: message
 ```
 
@@ -45,7 +45,7 @@ label: message
 
 ## 4. PR 제목 형식
 
-```
+```text
 [LABEL] title
 ```
 
