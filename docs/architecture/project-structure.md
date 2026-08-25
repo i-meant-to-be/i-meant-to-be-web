@@ -26,18 +26,29 @@ src/
 │   │   └── components/            # HomePage 전용 컴포넌트
 │   │       └── TextButton.tsx
 │   ├── PostPage/
-│   │   └── PostPage.tsx           # 현재 placeholder ("공사 중"), noindex 처리됨
+│   │   ├── PostPage.tsx           # 게시글 목록 (posts/getAllPosts 기반)
+│   │   └── components/
+│   │       └── PostListItem.tsx   # 목록 항목 UI
+│   ├── PostDetailPage/
+│   │   ├── PostDetailPage.tsx     # 게시글 상세 (/post/:id, posts/getPostById 기반)
+│   │   └── components/
+│   │       └── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
 │   └── MusicPage/
 │       └── MusicPage.tsx
-├── posts/                        # 준비 중 — 아직 PostPage와 연결되지 않은 Markdown 원고
-│   └── 0001.md
+├── posts/                        # Markdown 원고 + 로더
+│   ├── 0001-hello-world.md        # 파일명이 곧 게시물 id (URL: /post/{파일명})
+│   ├── parsePost.ts               # frontmatter 파서 (순수 함수, Node 스크립트와 공유 가능)
+│   └── index.ts                   # import.meta.glob으로 전체 로드, getAllPosts/getPostById
 ├── routes/
-│   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/MUSIC)
+│   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/POST_DETAIL/MUSIC)
 │   ├── router.tsx                 # createBrowserRouter 등록
-│   └── seo.ts                     # 라우트별 SEO 데이터 단일 소스
+│   └── seo.ts                     # 정적 라우트별 SEO 데이터 단일 소스
 ├── index.css                     # Tailwind 진입점 + @theme 토큰
 └── main.tsx                      # React root, HelmetProvider, RouterProvider, Analytics 조립
 ```
+
+`scripts/generate-sitemap.mjs`(저장소 루트)는 `npm run build`의 일부로 실행되어
+`public/sitemap.xml`을 정적 라우트 + `draft`가 아닌 게시물 목록으로부터 재생성한다.
 
 ## 3. 컴포넌트 배치 규칙
 
@@ -47,8 +58,14 @@ src/
 | 특정 페이지에서만 사용   | `src/pages/{Page}/components/`        |
 | 페이지 자체              | `src/pages/{Page}/{Page}.tsx` (같은 폴더에 `{Page}.test.tsx`) |
 
-## 4. 아직 연결되지 않은 것
+## 4. 게시물 작성 규칙
 
-- `src/posts/0001.md` — 테스트용 Markdown 원고. `PostPage`는 아직 이 파일을 읽지 않고 고정
-  문자열("공사 중")만 렌더링한다. `posts/`의 콘텐츠를 실제로 렌더링하도록 연결하기 전까지
-  `PostPage`는 `noindex` 상태를 유지해야 한다 (`routing-and-seo.md` §3 참고).
+- 파일명 형식: `{4자리 순번}-{영문 슬러그}.md` (예: `0001-hello-world.md`). 파일명(확장자 제외)이
+  그대로 URL id(`/post/{id}`)가 된다.
+- frontmatter 필수 필드: `title`, `date`(`YYYY-MM-DD`). 선택 필드: `description`(없으면 본문 첫
+  문단에서 자동 발췌), `tags`(`[태그1, 태그2]` 형식), `draft`(`true`면 목록/sitemap/색인에서 제외).
+- 본문에 frontmatter의 `title`과 같은 내용의 최상위 제목(`# ...`)을 다시 쓰지 않는다 — 페이지가
+  `title`로 자체 `<h1>`을 렌더링하므로 중복된다. 본문은 `##`부터 시작하거나 바로 문단으로
+  시작한다.
+- `parsePost.ts`/`index.ts`의 로딩 로직은 `docs/architecture/routing-and-seo.md` §3-1(동적 라우트
+  SEO)과 함께 해석한다.
