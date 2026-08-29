@@ -49,6 +49,14 @@ const components: Components = {
       {children}
     </a>
   ),
+  img: ({ src, alt }) => (
+    <img
+      src={typeof src === 'string' ? src : undefined}
+      alt={alt ?? ''}
+      loading="lazy"
+      className="mt-4 max-w-full rounded md:mt-6"
+    />
+  ),
   ul: ({ children }) => (
     <ul className="mt-4 list-disc space-y-1 pl-6 md:mt-6 md:space-y-2 md:pl-8">
       {children}
