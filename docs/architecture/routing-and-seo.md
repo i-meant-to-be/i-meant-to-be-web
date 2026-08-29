@@ -48,8 +48,8 @@ noindex? }}`를 넘기면 `seo.ts` 조회를 건너뛰고 이 값을 그대로 �
 canonical/OG URL 생성을 위해 실제 접근 경로(예: `` `${routes.POST}/${id}` ``)를 넘긴다.
 
 예시는 `src/pages/PostDetailPage/PostDetailPage.tsx` 참고 — 게시물의 frontmatter(`title`,
-`description`)를 override로 넘기고, `draft: true`인 게시물은 `noindex: true`로 넘긴다. 존재하지
-않는 id는 `noindex: true` override와 함께 안내 문구만 렌더링한다 (별도 404 라우트는 없음).
+`description`)를 override로 넘긴다. 존재하지 않는 id는 `noindex: true` override와 함께 안내
+문구만 렌더링한다 (별도 404 라우트는 없음).
 
 이 패턴을 쓰는 라우트는 `seo.ts`에 해당 경로 key를 추가하지 않는다 — `override`가 항상 필수이기
 때문이다.
@@ -81,6 +81,6 @@ canonical/OG URL 생성을 위해 실제 접근 경로(예: `` `${routes.POST}/$
 - `vercel.json`의 rewrite 규칙을 제거하거나, 특정 정적 파일만 예외 처리하려고 규칙을 좁히지
   않는다 (Vercel은 rewrite 전에 실제 정적 파일을 먼저 확인하므로 현재 규칙으로도
   `favicons/`, `assets/`는 이미 안전하다).
-- noindex 상태인 페이지를 `scripts/generate-sitemap.mjs`의 대상에 넣지 않는다 (게시물은
-  `draft: true`로 표시하면 스크립트가 자동으로 제외한다).
+- noindex 상태인 정적 라우트를 `scripts/generate-sitemap.mjs`의 `STATIC_PATHS`에 넣지
+  않는다. 게시물은 모두 색인 대상이므로 스크립트가 전부 포함한다.
 - `public/sitemap.xml`을 직접 수정하지 않는다 — 빌드 시 자동 재생성되어 덮어써진다.

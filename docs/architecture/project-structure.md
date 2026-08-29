@@ -51,7 +51,7 @@ src/
 ```
 
 `scripts/generate-sitemap.mjs`(저장소 루트)는 `npm run build`의 일부로 실행되어
-`public/sitemap.xml`을 정적 라우트 + `draft`가 아닌 게시물 목록으로부터 재생성한다.
+`public/sitemap.xml`을 정적 라우트 + 게시물 목록으로부터 재생성한다.
 `scripts/check-post-images.mjs`는 `npm run build` 첫 단계로 실행되어 게시물 본문의
 이미지 참조를 검증한다 (자세한 규칙은 [`posts.md`](posts.md) §4).
 
