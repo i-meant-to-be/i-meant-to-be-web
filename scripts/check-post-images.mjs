@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 const rootDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -8,8 +8,9 @@ const publicDir = path.join(rootDir, 'public');
 
 const MARKDOWN_IMAGE = /!\[[^\]]*\]\(([^)]+)\)/g;
 const HTML_IMAGE = /<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/gi;
+const FENCE = /^(`{3,}|~{3,})/;
 
-/** `(url "title")` 형태에서 url만, 감싸는 <> 제거, 쿼리/해시 제거 */
+/** `(url "title")` 형태에서 url만, 감싸는 <> 제거 */
 function cleanUrl(raw) {
   let url = raw.trim();
   const spaceIndex = url.search(/\s/);
@@ -18,10 +19,22 @@ function cleanUrl(raw) {
   return url;
 }
 
-function collectRefs(body) {
+/** 코드 펜스(``` / ~~~) 안쪽은 건너뛰고 이미지 참조를 모은다. */
+export function collectRefs(body) {
   const refs = [];
-  const lines = body.split(/\r?\n/);
-  lines.forEach((line, index) => {
+  let openFence = null;
+  body.split(/\r?\n/).forEach((line, index) => {
+    const fence = line.trim().match(FENCE);
+    if (fence) {
+      const marker = fence[1];
+      if (!openFence) openFence = { char: marker[0], length: marker.length };
+      else if (marker[0] === openFence.char && marker.length >= openFence.length) {
+        openFence = null;
+      }
+      return;
+    }
+    if (openFence) return;
+
     for (const pattern of [MARKDOWN_IMAGE, HTML_IMAGE]) {
       pattern.lastIndex = 0;
       let match;
@@ -33,7 +46,8 @@ function collectRefs(body) {
   return refs;
 }
 
-function checkRef(url) {
+/** 문제가 있으면 사유 문자열을, 없으면 null을 돌려준다. */
+export function checkRef(url) {
   if (url.startsWith('data:')) return null;
   if (/^https?:\/\//i.test(url) || url.startsWith('//')) {
     return '외부 이미지 핫링크 금지 (posts.md §4-4) — 내려받아 public/posts/<id>/ 에 저장';
@@ -48,23 +62,29 @@ function checkRef(url) {
   return null;
 }
 
-const errors = [];
-let checked = 0;
+function main() {
+  const errors = [];
+  let checked = 0;
 
-for (const file of readdirSync(postsDir).filter((f) => f.endsWith('.md'))) {
-  const body = readFileSync(path.join(postsDir, file), 'utf-8');
-  for (const ref of collectRefs(body)) {
-    checked += 1;
-    const problem = checkRef(ref.url);
-    if (problem) {
-      errors.push(`  ${file}:${ref.line}  ${ref.url}\n    → ${problem}`);
+  for (const file of readdirSync(postsDir).filter((f) => f.endsWith('.md'))) {
+    const body = readFileSync(path.join(postsDir, file), 'utf-8');
+    for (const ref of collectRefs(body)) {
+      checked += 1;
+      const problem = checkRef(ref.url);
+      if (problem) {
+        errors.push(`  ${file}:${ref.line}  ${ref.url}\n    → ${problem}`);
+      }
     }
   }
+
+  if (errors.length > 0) {
+    console.error(`게시물 이미지 참조 ${errors.length}건 오류:\n${errors.join('\n')}`);
+    process.exit(1);
+  }
+
+  console.log(`check-post-images: 이미지 참조 ${checked}건 확인, 문제 없음.`);
 }
 
-if (errors.length > 0) {
-  console.error(`게시물 이미지 참조 ${errors.length}건 오류:\n${errors.join('\n')}`);
-  process.exit(1);
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
 }
-
-console.log(`check-post-images: 이미지 참조 ${checked}건 확인, 문제 없음.`);
