@@ -20,24 +20,26 @@ function renderAt(initialPath: string) {
 
 describe('PostDetailPage', () => {
   it('renders an existing post', () => {
-    renderAt('/post/0001-hello-world');
+    renderAt('/post/0003-efficient-ci-with-github-actions-jetpack-compose');
 
     expect(
-      screen.getByRole('heading', { name: '첫 번째 포스트' }),
+      screen.getByRole('heading', {
+        name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/테스트용 포스트입니다/)).toBeInTheDocument();
+    expect(screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/)).toBeInTheDocument();
   });
 
   it('renders a table of contents whose links resolve to real heading ids', () => {
-    renderAt('/post/0001-hello-world');
+    renderAt('/post/0003-efficient-ci-with-github-actions-jetpack-compose');
 
-    const tocLink = screen.getByRole('link', { name: '텍스트 스타일' });
+    const tocLink = screen.getByRole('link', { name: '들어가기' });
     const href = tocLink.getAttribute('href');
     expect(href).toMatch(/^#/);
 
     const heading = document.getElementById(href!.slice(1));
     expect(heading).not.toBeNull();
-    expect(heading).toHaveTextContent('텍스트 스타일');
+    expect(heading).toHaveTextContent('들어가기');
   });
 
   it('shows a not-found message for an unknown id', () => {

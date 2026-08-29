@@ -19,7 +19,7 @@ describe('PostPage', () => {
     render(<RouterProvider router={router} />);
 
     expect(
-      screen.getByRole('link', { name: /첫 번째 포스트/ }),
+      screen.getByRole('link', { name: /효율적인 Android CI 구축/ }),
     ).toBeInTheDocument();
   });
 });
