@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const rootDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const postsDir = path.join(rootDir, 'src', 'posts');
+const postsDir = path.join(rootDir, 'src', 'posts', 'content');
 const sitemapPath = path.join(rootDir, 'public', 'sitemap.xml');
 
 const SITE_URL = 'https://imeantto.be';
