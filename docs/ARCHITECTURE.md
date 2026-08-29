@@ -56,6 +56,7 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | 문서                                                          | 목적                                                          |
 | --------------------------------------------------------------- | --------------------------------------------------------------- |
 | [`project-structure.md`](architecture/project-structure.md)     | 폴더 구조, 페이지/컴포넌트 소유권, 아직 연결되지 않은 것        |
+| [`posts.md`](architecture/posts.md)                             | 게시물 저작 계약 — frontmatter, 본문 heading, 이미지 정책        |
 | [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / vercel.json / sitemap.xml 연동 계약 |
 | [`styling.md`](architecture/styling.md)                         | Tailwind 컬러 토큰, 클래스 작성 규칙                              |
 
@@ -66,6 +67,7 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | 작업                              | 필수 세부 문서                          |
 | --------------------------------- | ---------------------------------------- |
 | 새 페이지/라우트 추가             | `project-structure.md`, `routing-and-seo.md` |
+| 게시물 추가 또는 수정             | `project-structure.md`, `posts.md` (외부 원고 이관은 `docs/workflows/add-new-post.md`) |
 | 페이지 title/description 변경     | `routing-and-seo.md`                     |
 | 공용 컴포넌트 추가 또는 변경      | `project-structure.md`, `styling.md`     |
 | 색상, 폰트 등 디자인 토큰 변경    | `styling.md`                             |

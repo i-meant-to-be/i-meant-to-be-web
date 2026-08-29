@@ -35,10 +35,13 @@ src/
 │   │       └── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
 │   └── MusicPage/
 │       └── MusicPage.tsx
-├── posts/                        # Markdown 원고 + 로더
-│   ├── 0001-hello-world.md        # 파일명이 곧 게시물 id (URL: /post/{파일명})
+├── posts/                        # 게시물 로더 (코드) + content/ 원고
+│   ├── content/                   # Markdown 원고만 모아둠 (저작 규칙·이미지 정책: posts.md)
+│   │   └── 0001-hello-world.md    # 파일명이 곧 게시물 id (URL: /post/{파일명})
 │   ├── parsePost.ts               # frontmatter 파서 (순수 함수, Node 스크립트와 공유 가능)
-│   └── index.ts                   # import.meta.glob으로 전체 로드, getAllPosts/getPostById
+│   ├── extractHeadings.ts         # 본문에서 목차용 제목 추출
+│   ├── formatDate.ts              # 날짜 표시 포맷
+│   └── index.ts                   # import.meta.glob('./content/*.md')으로 전체 로드, getAllPosts/getPostById
 ├── routes/
 │   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/POST_DETAIL/MUSIC)
 │   ├── router.tsx                 # createBrowserRouter 등록
@@ -49,6 +52,11 @@ src/
 
 `scripts/generate-sitemap.mjs`(저장소 루트)는 `npm run build`의 일부로 실행되어
 `public/sitemap.xml`을 정적 라우트 + `draft`가 아닌 게시물 목록으로부터 재생성한다.
+`scripts/check-post-images.mjs`는 `npm run build` 첫 단계로 실행되어 게시물 본문의
+이미지 참조를 검증한다 (자세한 규칙은 [`posts.md`](posts.md) §4).
+
+게시물 원고 자체의 작성 규칙(frontmatter, 본문 heading, 이미지 정책)은
+[`posts.md`](posts.md)가 정의한다.
 
 ## 3. 컴포넌트 배치 규칙
 
@@ -58,14 +66,8 @@ src/
 | 특정 페이지에서만 사용   | `src/pages/{Page}/components/`        |
 | 페이지 자체              | `src/pages/{Page}/{Page}.tsx` (같은 폴더에 `{Page}.test.tsx`) |
 
-## 4. 게시물 작성 규칙
+## 4. 게시물
 
-- 파일명 형식: `{4자리 순번}-{영문 슬러그}.md` (예: `0001-hello-world.md`). 파일명(확장자 제외)이
-  그대로 URL id(`/post/{id}`)가 된다.
-- frontmatter 필수 필드: `title`, `date`(`YYYY-MM-DD`). 선택 필드: `description`(없으면 본문 첫
-  문단에서 자동 발췌), `tags`(`[태그1, 태그2]` 형식), `draft`(`true`면 목록/sitemap/색인에서 제외).
-- 본문에 frontmatter의 `title`과 같은 내용의 최상위 제목(`# ...`)을 다시 쓰지 않는다 — 페이지가
-  `title`로 자체 `<h1>`을 렌더링하므로 중복된다. 본문은 `##`부터 시작하거나 바로 문단으로
-  시작한다.
-- `parsePost.ts`/`index.ts`의 로딩 로직은 `docs/architecture/routing-and-seo.md` §3-1(동적 라우트
-  SEO)과 함께 해석한다.
+게시물 원고의 위치·네이밍·frontmatter 계약·본문 heading 규칙·이미지 정책은
+[`posts.md`](posts.md)가 정의한다. 이 문서는 `src/posts/` 폴더의 코드/원고 분리만
+다룬다 (§2 참고).

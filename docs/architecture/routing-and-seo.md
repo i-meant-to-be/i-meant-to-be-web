@@ -14,6 +14,7 @@
 | `vercel.json`               | Vercel에서 `/` 이외의 모든 경로를 `index.html`로 rewrite (SPA fallback)              |
 | `public/robots.txt`         | 크롤링 허용 범위와 sitemap 위치                                                       |
 | `public/sitemap.xml`        | **빌드타임에 자동 생성됨** (`scripts/generate-sitemap.mjs`, `npm run build`의 일부). 색인 대상 URL 목록 (noindex 페이지는 제외). 수동 편집 금지 — 직접 고친 내용은 다음 빌드에서 덮어써진다 |
+| `scripts/check-post-images.mjs` | `npm run build` 첫 단계. 게시물 본문의 이미지 참조가 유효한지 검증하고 위반 시 빌드를 실패시킨다 (규칙: [`posts.md`](posts.md) §4) |
 
 ## 2. 왜 vercel.json이 필요한가
 
@@ -52,6 +53,8 @@ canonical/OG URL 생성을 위해 실제 접근 경로(예: `` `${routes.POST}/$
 
 이 패턴을 쓰는 라우트는 `seo.ts`에 해당 경로 key를 추가하지 않는다 — `override`가 항상 필수이기
 때문이다.
+
+게시물 frontmatter 필드 계약과 본문 작성 규칙은 [`posts.md`](posts.md)를 참고한다.
 
 ## 4. 새 라우트 추가 체크리스트
 
