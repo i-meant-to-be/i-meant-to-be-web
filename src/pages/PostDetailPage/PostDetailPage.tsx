@@ -42,7 +42,6 @@ export default function PostDetailPage() {
         override={{
           title: post.meta.title,
           description: post.meta.description,
-          noindex: post.meta.draft,
         }}
       />
 

@@ -20,7 +20,6 @@ tags: [태그1, 태그2]
       description: '설명',
       date: '2025-01-01',
       tags: ['태그1', '태그2'],
-      draft: false,
     });
     expect(post.content).toBe('본문입니다.');
   });
@@ -39,19 +38,6 @@ date: 2025-01-01
     const post = parsePost(raw);
 
     expect(post.meta.description).toBe('첫 문단입니다.');
-  });
-
-  it('treats draft: true as a draft post', () => {
-    const raw = `---
-title: 제목
-date: 2025-01-01
-draft: true
----
-
-본문
-`;
-
-    expect(parsePost(raw).meta.draft).toBe(true);
   });
 
   it('throws when required fields are missing', () => {

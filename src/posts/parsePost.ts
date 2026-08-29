@@ -3,7 +3,6 @@ export interface PostMeta {
   description: string;
   date: string;
   tags: string[];
-  draft: boolean;
 }
 
 export interface Post {
@@ -88,10 +87,9 @@ export function parsePost(raw: string): Post {
       ? fields.description
       : excerpt(content);
   const tags = Array.isArray(fields.tags) ? fields.tags : [];
-  const draft = fields.draft === 'true';
 
   return {
-    meta: { title, description, date, tags, draft },
+    meta: { title, description, date, tags },
     content: content.trim(),
   };
 }

@@ -15,7 +15,6 @@ const posts: PostWithId[] = Object.entries(modules)
     const id = path.replace('./content/', '').replace(/\.md$/, '');
     return { id, ...parsePost(raw) };
   })
-  .filter((post) => !post.meta.draft)
   .sort((a, b) => b.meta.date.localeCompare(a.meta.date));
 
 export function getAllPosts(): PostWithId[] {
