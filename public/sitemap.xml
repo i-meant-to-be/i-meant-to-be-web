@@ -12,4 +12,28 @@
   <url>
     <loc>https://imeantto.be/post/0001-hello-world</loc>
   </url>
+  <url>
+    <loc>https://imeantto.be/post/0002-how-to-manage-tokens-on-jetpack-compose</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0003-efficient-ci-with-github-actions-jetpack-compose</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0004-android-16-kb-paging-and-building-c-binaries</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0005-thread-coroutines-dispatchers-kotlin</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0006-my-first-and-last-hackerthon</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0007-kotlin-dispatchers-c-thread-deathmatch</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0008-what-is-ssd</loc>
+  </url>
+  <url>
+    <loc>https://imeantto.be/post/0009-multi-module-architecture-and-application-on-android</loc>
+  </url>
 </urlset>
