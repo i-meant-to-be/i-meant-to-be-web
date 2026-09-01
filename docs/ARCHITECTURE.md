@@ -26,25 +26,29 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | --------- | ------------------------------------------------------ |
 | Build Tool | Vite                                                   |
 | UI        | React 19                                                |
-| Routing   | react-router-dom (`createBrowserRouter`, CSR)           |
+| Routing   | react-router-dom (`createBrowserRouter`, CSR + 빌드타임 프리렌더) |
 | Styling   | Tailwind CSS 4 (`@theme` 토큰)                          |
 | Test      | Vitest + Testing Library                                |
-| Hosting   | Vercel 정적 SPA (`vercel.json` rewrite로 서브라우트 처리) |
+| Hosting   | Vercel 정적 호스팅 (라우트별 프리렌더 HTML + `vercel.json` rewrite fallback) |
 | Analytics | `@vercel/analytics`                                     |
-| SEO       | `react-helmet-async` + `src/routes/seo.ts` 단일 소스     |
+| SEO       | React 19 네이티브 metadata hoisting + `src/components/seoTags.ts` (`seo.ts` / 게시물 frontmatter 조회) |
 
 ## 3. 핵심 불변조건
 
 - SEO 문구(title/description)는 `src/routes/seo.ts`에만 쓴다. 페이지 컴포넌트에 직접
   문자열로 쓰지 않는다.
-- 새 라우트를 추가하면 `route.ts` + `router.tsx` + `seo.ts`를 함께 갱신하고, 색인 대상인
-  경우에만 `sitemap.xml`도 갱신한다 (`routing-and-seo.md` §4 체크리스트 참고).
+- 새 라우트를 추가하면 `route.ts` + `routes.tsx` + `seo.ts` + `src/posts/feed.ts`의
+  `STATIC_PATHS`를 함께 갱신한다 (`routing-and-seo.md` §5 체크리스트 참고).
+- `sitemap.xml`과 `rss.xml`은 `npm run build`가 `dist/`에 생성하는 산출물이다. 손으로
+  만들거나 커밋하지 않는다.
 - `vercel.json`의 SPA rewrite는 삭제하지 않는다 — 제거하면 `/` 이외의 모든 라우트가 실제
   404를 반환한다.
 - `.env`의 실제 값(URL 등)은 커밋하지 않는다. `.env`는 `.gitignore`에 있어야 한다.
-- 페이지 간 이동은 `react-router-dom`의 `Link`/`NavLink`만 쓴다. 외부 링크에만
-  `window.open`을 쓴다 — 내부 라우트에 `window.open`을 쓰면 크롤러가 링크를 발견하지
-  못한다.
+- 페이지 간 이동은 `react-router-dom`의 `Link`/`NavLink`만 쓴다. 내부 라우트에
+  `window.open`을 쓰면 크롤러가 링크를 발견하지 못한다.
+- 외부 링크는 `<a href target="_blank" rel="noreferrer noopener">`를 기본으로 하고,
+  버튼 UI가 필요한 경우에만 `window.open`을 쓴다. 문장 안에 흐르는 링크에는 블록 레벨
+  요소를 쓰지 않는다 — 크롤러가 문장을 끊어 검색 스니펫이 깨진다.
 - 공용 컴포넌트는 `src/components/`, 페이지 전용 컴포넌트는
   `src/pages/{Page}/components/`에 둔다.
 
@@ -57,7 +61,7 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | --------------------------------------------------------------- | --------------------------------------------------------------- |
 | [`project-structure.md`](architecture/project-structure.md)     | 폴더 구조, 페이지/컴포넌트 소유권, 아직 연결되지 않은 것        |
 | [`posts.md`](architecture/posts.md)                             | 게시물 저작 계약 — frontmatter, 본문 heading, 이미지 정책        |
-| [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / vercel.json / sitemap.xml 연동 계약 |
+| [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / 프리렌더 / vercel.json / sitemap·RSS 연동 계약 |
 | [`styling.md`](architecture/styling.md)                         | Tailwind 컬러 토큰, 클래스 작성 규칙                              |
 
 ## 5. 작업별 필수 읽기
