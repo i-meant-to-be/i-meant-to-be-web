@@ -43,7 +43,8 @@ export function buildSitemapXml(posts: PostWithId[]): string {
   const body = [...staticEntries, ...postEntries]
     .map(({ path, lastmod }) => {
       const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : '';
-      return `  <url>\n    <loc>${SITE_URL}${path}</loc>${lastmodTag}\n  </url>`;
+      const loc = escapeXml(`${SITE_URL}${path}`);
+      return `  <url>\n    <loc>${loc}</loc>${lastmodTag}\n  </url>`;
     })
     .join('\n');
 
@@ -57,7 +58,7 @@ ${body}
 export function buildRssXml(posts: PostWithId[]): string {
   const items = posts
     .map((post) => {
-      const url = `${SITE_URL}${postPath(post)}`;
+      const url = escapeXml(`${SITE_URL}${postPath(post)}`);
       const categories = post.meta.tags.map(
         (tag) => `      <category>${escapeXml(tag)}</category>`,
       );
