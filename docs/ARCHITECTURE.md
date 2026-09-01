@@ -37,8 +37,10 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 
 - SEO 문구(title/description)는 `src/routes/seo.ts`에만 쓴다. 페이지 컴포넌트에 직접
   문자열로 쓰지 않는다.
-- 새 라우트를 추가하면 `route.ts` + `routes.tsx` + `seo.ts` + `src/posts/feed.ts`의
-  `STATIC_PATHS`를 함께 갱신한다 (`routing-and-seo.md` §5 체크리스트 참고).
+- 새 라우트를 추가하면 `route.ts` + `routes.tsx` + `src/posts/feed.ts`의 `STATIC_PATHS`를
+  함께 갱신한다. `seo.ts`는 **정적 라우트에만** 추가한다 — 동적 라우트의 title/description은
+  `seoTags.ts`의 `resolveSeoData`가 게시물 frontmatter에서 읽는다
+  (`routing-and-seo.md` §5 체크리스트 참고).
 - `sitemap.xml`과 `rss.xml`은 `npm run build`가 `dist/`에 생성하는 산출물이다. 손으로
   만들거나 커밋하지 않는다.
 - `vercel.json`의 SPA rewrite는 삭제하지 않는다 — 제거하면 `/` 이외의 모든 라우트가 실제

@@ -123,7 +123,9 @@ noindex 지시를 읽지 못하고, 외부 신호만으로 그 URL을 색인해�
 6. `Header.tsx`에 내비게이션이 필요하면 `NavLink`로 추가 (내부 라우트는 항상
    `Link`/`NavLink`만 쓴다 — `window.open`은 외부 링크 전용. `Footer.tsx`/`HomePage.tsx`의
    외부 링크 버튼 참고)
-7. 배포 후 `curl -I`로 200 확인, Google Search Console에서 URL 검사 → 색인 생성 요청
+7. 배포 후 `curl -s https://imeantto.be/{경로} | grep '<title>'`로 **응답 본문에 그 라우트의
+   프리렌더된 SEO 메타데이터가 들어 있는지** 확인한다 — 상태코드만 보면 SPA fallback과
+   구분되지 않는다 (§3 검증 방법). 그 다음 Google Search Console에서 URL 검사 → 색인 생성 요청
 
 ## 6. 금지 사항
 
