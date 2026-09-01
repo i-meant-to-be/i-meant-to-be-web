@@ -20,14 +20,7 @@ export default function PostDetailPage() {
   if (!post) {
     return (
       <Layout>
-        <Seo
-          path={path}
-          override={{
-            title: '게시글을 찾을 수 없어요',
-            description: '요청한 게시글이 존재하지 않습니다.',
-            noindex: true,
-          }}
-        />
+        <Seo path={path} />
         <h1 className="text-2xl font-bold md:text-3xl">
           게시글을 찾을 수 없어요.
         </h1>
@@ -37,13 +30,7 @@ export default function PostDetailPage() {
 
   return (
     <Layout>
-      <Seo
-        path={path}
-        override={{
-          title: post.meta.title,
-          description: post.meta.description,
-        }}
-      />
+      <Seo path={path} />
 
       <div className="flex flex-row items-center justify-between mb-24 md:mb-32">
         <BackToListButton />
