@@ -5,5 +5,3 @@ reviews:
     - "!src/posts/content/**"
     # 게시물 이미지 애셋.
     - "!public/posts/**"
-    # 빌드 시 자동 생성되는 sitemap.
-    - "!public/sitemap.xml"

@@ -19,7 +19,9 @@ src/
 │   ├── Header.tsx                 # 상단 네비게이션 (NavLink 기반)
 │   ├── HeaderButton.tsx           # Header 내부 버튼 UI (선택 상태 스타일)
 │   ├── Footer.tsx                  # 하단 외부 링크(GitHub, Instagram)
-│   └── Seo.tsx                     # 라우트별 <head> 태그 렌더링 (routing-and-seo.md 참고)
+│   ├── Seo.tsx                     # 라우트별 <head> 태그 렌더링 (routing-and-seo.md 참고)
+│   ├── seoTags.ts                  # 경로 → SEO 데이터/head 태그/프리렌더 HTML (순수 함수)
+│   └── jsonLd.ts                   # 라우트별 JSON-LD 그래프 생성 (순수 함수)
 ├── pages/                        # 라우트 1개 = 페이지 폴더 1개
 │   ├── HomePage/
 │   │   ├── HomePage.tsx
@@ -41,17 +43,22 @@ src/
 │   ├── parsePost.ts               # frontmatter 파서 (순수 함수, Node 스크립트와 공유 가능)
 │   ├── extractHeadings.ts         # 본문에서 목차용 제목 추출
 │   ├── formatDate.ts              # 날짜 표시 포맷
+│   ├── feed.ts                    # 프리렌더 경로 목록 + sitemap/RSS XML 생성 (순수 함수)
 │   └── index.ts                   # import.meta.glob('./content/*.md')으로 전체 로드, getAllPosts/getPostById
 ├── routes/
 │   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/POST_DETAIL/MUSIC)
-│   ├── router.tsx                 # createBrowserRouter 등록
+│   ├── routes.tsx                 # 경로 ↔ 페이지 컴포넌트 배열 (브라우저/프리렌더 공유)
+│   ├── router.tsx                 # routes.tsx를 createBrowserRouter에 등록 (브라우저 전용)
 │   └── seo.ts                     # 정적 라우트별 SEO 데이터 단일 소스
+├── site.ts                       # 사이트 URL/이름/저자 등 전역 상수
 ├── index.css                     # Tailwind 진입점 + @theme 토큰
-└── main.tsx                      # React root, HelmetProvider, RouterProvider, Analytics 조립
+├── entry-server.tsx              # 프리렌더 엔트리 (renderToString + head/sitemap/RSS)
+└── main.tsx                      # React root(hydrate 또는 CSR), RouterProvider, Analytics 조립
 ```
 
-`scripts/generate-sitemap.mjs`(저장소 루트)는 `npm run build`의 일부로 실행되어
-`public/sitemap.xml`을 정적 라우트 + 게시물 목록으로부터 재생성한다.
+`scripts/prerender.mjs`(저장소 루트)는 `npm run build` 마지막 단계로 실행되어 모든
+라우트를 `dist/<경로>/index.html`로 굽고 `dist/sitemap.xml`, `dist/rss.xml`을 생성한다
+(파이프라인 전체: [`routing-and-seo.md`](routing-and-seo.md) §1-1).
 `scripts/check-post-images.mjs`는 `npm run build` 첫 단계로 실행되어 게시물 본문의
 이미지 참조를 검증한다 (자세한 규칙은 [`posts.md`](posts.md) §4).
 

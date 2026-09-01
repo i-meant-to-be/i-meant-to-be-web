@@ -19,6 +19,7 @@ export default function HomePage() {
   return (
     <Layout>
       <Seo path={routes.ROOT} />
+      <h1 className="sr-only">강시운 · imeanttobe</h1>
       <p className="text-3xl break-keep font-bold leading-[1.8] md:text-5xl">
         {contents.map((content, index) => {
           if (typeof content === 'string') return content;
