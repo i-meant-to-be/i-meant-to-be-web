@@ -78,4 +78,46 @@ date: 2025-02-30
 
     expect(() => parsePost(raw)).toThrow();
   });
+
+  it('parses a valid updated date', () => {
+    const post = parsePost(`---
+title: 제목
+date: 2025-01-01
+updated: 2025-02-03
+---
+
+본문
+`);
+
+    expect(post.meta.updated).toBe('2025-02-03');
+  });
+
+  it.each(['2025/02/03', '2025-02-30'])(
+    'throws when updated is not a valid date: %s',
+    (updated) => {
+      expect(() =>
+        parsePost(`---
+title: 제목
+date: 2025-01-01
+updated: ${updated}
+---
+
+본문
+`),
+      ).toThrow('"updated" must be a valid YYYY-MM-DD date');
+    },
+  );
+
+  it('throws when updated is earlier than date', () => {
+    expect(() =>
+      parsePost(`---
+title: 제목
+date: 2025-02-03
+updated: 2025-02-02
+---
+
+본문
+`),
+    ).toThrow('"updated" must not be earlier than "date"');
+  });
 });

@@ -26,7 +26,11 @@ describe('buildJsonLd', () => {
         path: '/post/0001-hello-world',
         title: '안녕',
         description: '첫 글',
-        article: { publishedTime: '2026-01-02', tags: ['안드로이드'] },
+        article: {
+          publishedTime: '2026-01-02',
+          modifiedTime: '2026-01-03',
+          tags: ['안드로이드'],
+        },
       }),
     );
 
@@ -34,6 +38,7 @@ describe('buildJsonLd', () => {
       '@type': 'BlogPosting',
       headline: '안녕',
       datePublished: '2026-01-02',
+      dateModified: '2026-01-03',
       keywords: ['안드로이드'],
       url: 'https://imeantto.be/post/0001-hello-world',
     });
@@ -62,5 +67,18 @@ describe('buildJsonLd', () => {
 
     expect(graph[0]['@type']).toBe('WebPage');
     expect(graph[1]['@type']).toBe('BreadcrumbList');
+  });
+
+  it('omits dateModified when a post has no updated date', () => {
+    const graph = graphOf(
+      buildJsonLd({
+        path: '/post/0002-post',
+        title: '게시글',
+        description: '설명',
+        article: { publishedTime: '2026-01-02', tags: [] },
+      }),
+    );
+
+    expect(graph[0]).not.toHaveProperty('dateModified');
   });
 });
