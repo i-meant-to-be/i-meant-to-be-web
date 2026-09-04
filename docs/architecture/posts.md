@@ -30,7 +30,9 @@
 
 본문, 구조화 데이터 또는 주요 링크를 실질적으로 수정하면 `updated`를 실제 수정일로 갱신한다.
 오탈자처럼 의미에 영향이 없는 변경에는 갱신하지 않으며, 기존 글에 근거 없는 수정일을 일괄
-추가하지 않는다. sitemap의 게시물 `lastmod`와 RSS `lastBuildDate`는 `updated ?? date`를 쓴다.
+추가하지 않는다. sitemap의 게시물 `lastmod`는 `updated ?? date`를 쓴다. RSS channel의
+`lastBuildDate`는 `latestModified(posts)`로 모든 게시물의 `updated ?? date` 중 최댓값을
+선택하고, 각 item의 `pubDate`는 최초 발행일인 `post.meta.date`를 쓴다.
 
 ## 3. 본문 작성 규칙
 
