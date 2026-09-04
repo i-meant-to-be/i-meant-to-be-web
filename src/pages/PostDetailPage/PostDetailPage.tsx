@@ -11,6 +11,7 @@ import MarkdownContent from './components/MarkdownContent';
 import PostListSection from './components/PostListSection';
 import ShareButton from './components/ShareButton';
 import TableOfContents from './components/TableOfContents';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -18,14 +19,7 @@ export default function PostDetailPage() {
   const path = `${routes.POST}/${id ?? ''}`;
 
   if (!post) {
-    return (
-      <Layout>
-        <Seo path={path} />
-        <h1 className="text-2xl font-bold md:text-3xl">
-          게시글을 찾을 수 없어요.
-        </h1>
-      </Layout>
-    );
+    return <NotFoundPage />;
   }
 
   return (

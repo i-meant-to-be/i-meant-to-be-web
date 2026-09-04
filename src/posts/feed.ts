@@ -1,9 +1,17 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import ReactMarkdown, {
+  defaultUrlTransform,
+  type Components,
+} from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { SITE_LANGUAGE, SITE_NAME, SITE_URL } from '../site';
 import routes from '../routes/route';
 import seo from '../routes/seo';
 import type { PostWithId } from './index';
 
 const STATIC_PATHS = [routes.ROOT, routes.POST, routes.MUSIC];
+const RSS_MAX_BYTES = 10 * 1024 * 1024;
 
 function postPath(post: PostWithId): string {
   return `${routes.POST}/${post.id}`;
@@ -23,21 +31,77 @@ function escapeXml(value: string): string {
     .replace(/'/g, '&apos;');
 }
 
+function lastModified(post: PostWithId): string {
+  return post.meta.updated ?? post.meta.date;
+}
+
+function latestModified(posts: PostWithId[]): string | undefined {
+  return posts.reduce<string | undefined>((latest, post) => {
+    const modified = lastModified(post);
+    return !latest || modified > latest ? modified : latest;
+  }, undefined);
+}
+
+function absoluteContentUrl(url: string): string {
+  const absolute =
+    url.startsWith('/') && !url.startsWith('//') ? `${SITE_URL}${url}` : url;
+  return defaultUrlTransform(absolute);
+}
+
+const rssComponents: Components = {
+  a: ({ href, children }) => createElement('a', { href }, children),
+  img: ({ src, alt }) =>
+    createElement('img', {
+      src: typeof src === 'string' ? src : undefined,
+      alt: alt ?? '',
+      loading: 'lazy',
+    }),
+};
+
+/** Markdown 원문을 스타일·스크립트 없는 RSS용 HTML로 변환한다. */
+export function renderRssContent(content: string): string {
+  return renderToStaticMarkup(
+    createElement(ReactMarkdown, {
+      remarkPlugins: [remarkGfm],
+      components: rssComponents,
+      urlTransform: absoluteContentUrl,
+      children: content,
+    }),
+  );
+}
+
+export function toCdata(value: string): string {
+  return `<![CDATA[${value.replace(/]]>/g, ']]]]><![CDATA[>')}]]>`;
+}
+
+/** 네이버 RSS 제출 제한을 넘으면 배포 전에 빌드를 실패시킨다. */
+export function assertRssSize(xml: string, maxBytes = RSS_MAX_BYTES): void {
+  const bytes = new TextEncoder().encode(xml).byteLength;
+  if (bytes > maxBytes) {
+    throw new Error(
+      `RSS exceeds the ${maxBytes}-byte size limit (${bytes} bytes).`,
+    );
+  }
+}
+
 /** `YYYY-MM-DD` → RFC 822 (RSS `pubDate` 형식). */
 export function toRfc822(date: string): string {
   return new Date(`${date}T00:00:00Z`).toUTCString();
 }
 
 export function buildSitemapXml(posts: PostWithId[]): string {
-  const latest = posts[0]?.meta.date;
+  const latest = latestModified(posts);
 
-  const staticEntries = STATIC_PATHS.filter(
-    (path) => !seo[path]?.noindex,
-  ).map((path) => ({ path, lastmod: latest }));
+  const staticEntries = STATIC_PATHS.filter((path) => !seo[path]?.noindex).map(
+    (path) => ({
+      path,
+      lastmod: path === routes.POST ? latest : undefined,
+    }),
+  );
 
   const postEntries = posts.map((post) => ({
     path: postPath(post),
-    lastmod: post.meta.date,
+    lastmod: lastModified(post),
   }));
 
   const body = [...staticEntries, ...postEntries]
@@ -62,13 +126,15 @@ export function buildRssXml(posts: PostWithId[]): string {
       const categories = post.meta.tags.map(
         (tag) => `      <category>${escapeXml(tag)}</category>`,
       );
+      const content = toCdata(renderRssContent(post.content));
       return [
         '    <item>',
         `      <title>${escapeXml(post.meta.title)}</title>`,
         `      <link>${url}</link>`,
         `      <guid isPermaLink="true">${url}</guid>`,
         `      <pubDate>${toRfc822(post.meta.date)}</pubDate>`,
-        `      <description>${escapeXml(post.meta.description)}</description>`,
+        `      <description>${content}</description>`,
+        `      <content:encoded>${content}</content:encoded>`,
         ...categories,
         '    </item>',
       ].join('\n');
@@ -76,17 +142,21 @@ export function buildRssXml(posts: PostWithId[]): string {
     .join('\n');
 
   const description = seo[routes.ROOT].description;
+  const lastBuildDate = latestModified(posts);
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${escapeXml(SITE_NAME)}</title>
     <link>${SITE_URL}/</link>
     <description>${escapeXml(description)}</description>
     <language>${SITE_LANGUAGE}</language>
-    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
+${lastBuildDate ? `    <lastBuildDate>${toRfc822(lastBuildDate)}</lastBuildDate>\n` : ''}    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
 ${items}
   </channel>
 </rss>
 `;
+
+  assertRssSize(xml);
+  return xml;
 }

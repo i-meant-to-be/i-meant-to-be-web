@@ -3,6 +3,7 @@ import HomePage from '../pages/HomePage/HomePage';
 import PostPage from '../pages/PostPage/PostPage';
 import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import MusicPage from '../pages/MusicPage/MusicPage';
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import routes from './route';
 
 /**
@@ -25,6 +26,10 @@ const routeObjects: RouteObject[] = [
   {
     path: routes.MUSIC,
     element: <MusicPage />,
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ];
 

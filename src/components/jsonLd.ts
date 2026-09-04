@@ -1,13 +1,9 @@
-import {
-  AUTHOR_NAME,
-  SITE_LANGUAGE,
-  SITE_NAME,
-  SITE_URL,
-} from '../site';
+import { AUTHOR_NAME, SITE_LANGUAGE, SITE_NAME, SITE_URL } from '../site';
 import routes from '../routes/route';
 
 export interface ArticleInfo {
   publishedTime: string;
+  modifiedTime?: string;
   tags: string[];
 }
 
@@ -60,6 +56,9 @@ export function buildJsonLd({
           headline: title,
           description,
           datePublished: article.publishedTime,
+          ...(article.modifiedTime
+            ? { dateModified: article.modifiedTime }
+            : {}),
           keywords: article.tags,
           inLanguage: SITE_LANGUAGE,
           author,

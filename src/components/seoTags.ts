@@ -8,6 +8,8 @@ export interface SeoData {
   title: string;
   description: string;
   noindex?: boolean;
+  /** 실제 404 응답에는 URL을 확정하는 canonical/구조화 데이터를 내보내지 않는다. */
+  notFound?: boolean;
   /** `og:type=article`이어야 하는 라우트(게시물 상세)에서만 채워진다. */
   article?: ArticleInfo;
 }
@@ -19,9 +21,10 @@ export interface SeoTag {
 }
 
 const NOT_FOUND: SeoData = {
-  title: '게시글을 찾을 수 없어요',
-  description: '요청한 게시글이 존재하지 않습니다.',
+  title: '페이지를 찾을 수 없어요.',
+  description: '요청한 페이지가 존재하지 않습니다.',
   noindex: true,
+  notFound: true,
 };
 
 /**
@@ -41,7 +44,11 @@ export function resolveSeoData(path: string): SeoData {
     return {
       title: post.meta.title,
       description: post.meta.description,
-      article: { publishedTime: post.meta.date, tags: post.meta.tags },
+      article: {
+        publishedTime: post.meta.date,
+        ...(post.meta.updated ? { modifiedTime: post.meta.updated } : {}),
+        tags: post.meta.tags,
+      },
     };
   }
 
@@ -75,15 +82,27 @@ export function buildSeoTags(path: string, data: SeoData): SeoTag[] {
         content: data.noindex ? 'noindex, follow' : 'index, follow',
       },
     },
-    { tag: 'link', attrs: { rel: 'canonical', href: url } },
+    ...(data.notFound
+      ? []
+      : [{ tag: 'link' as const, attrs: { rel: 'canonical', href: url } }]),
 
     {
       tag: 'meta',
       attrs: { property: 'og:type', content: article ? 'article' : 'website' },
     },
     { tag: 'meta', attrs: { property: 'og:title', content: title } },
-    { tag: 'meta', attrs: { property: 'og:description', content: description } },
-    { tag: 'meta', attrs: { property: 'og:url', content: url } },
+    {
+      tag: 'meta',
+      attrs: { property: 'og:description', content: description },
+    },
+    ...(data.notFound
+      ? []
+      : [
+          {
+            tag: 'meta' as const,
+            attrs: { property: 'og:url', content: url },
+          },
+        ]),
 
     ...(article
       ? [
@@ -148,19 +167,21 @@ export function renderHeadHtml(path: string): string {
   const tags = buildSeoTags(path, data).map(serialize);
 
   // JSON-LD의 headline/name은 사이트명 접미사가 없는 원래 제목을 쓴다.
-  const jsonLd = buildJsonLd({
-    path,
-    title: data.title,
-    description: data.description,
-    article: data.article,
-  });
+  if (!data.notFound) {
+    const jsonLd = buildJsonLd({
+      path,
+      title: data.title,
+      description: data.description,
+      article: data.article,
+    });
 
-  tags.push(
-    `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(
-      /</g,
-      '\\u003c',
-    )}</script>`,
-  );
+    tags.push(
+      `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(
+        /</g,
+        '\\u003c',
+      )}</script>`,
+    );
+  }
 
   return tags.join('\n    ');
 }
