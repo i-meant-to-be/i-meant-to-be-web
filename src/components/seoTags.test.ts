@@ -10,7 +10,7 @@ describe('resolveSeoData', () => {
     expect(data.title).toBe(post.meta.title);
     expect(data.article).toEqual({
       publishedTime: post.meta.date,
-      tags: post.meta.tags,
+      tags: [post.meta.category, ...post.meta.tags],
     });
   });
 

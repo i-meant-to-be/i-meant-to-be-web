@@ -1,8 +1,14 @@
+export const CATEGORIES = ['개발', '철학'] as const;
+
+export type Category = (typeof CATEGORIES)[number];
+
 export interface PostMeta {
   title: string;
   description: string;
   date: string;
   updated?: string;
+  /** 태그의 상위 분류. 게시글 목록의 필터 기준이다. */
+  category: Category;
   tags: string[];
 }
 
@@ -23,6 +29,10 @@ function isValidDate(value: string): boolean {
     date.getUTCMonth() === month - 1 &&
     date.getUTCDate() === day
   );
+}
+
+function isCategory(value: unknown): value is Category {
+  return (CATEGORIES as readonly unknown[]).includes(value);
 }
 
 function excerpt(content: string): string {
@@ -95,6 +105,16 @@ export function parsePost(raw: string): Post {
     }
   }
 
+  const category = fields.category;
+  if (typeof category !== 'string' || !category) {
+    throw new Error('Post frontmatter is missing required field "category".');
+  }
+  if (!isCategory(category)) {
+    throw new Error(
+      `Post frontmatter "category" must be one of: ${CATEGORIES.join(', ')}.`,
+    );
+  }
+
   const description =
     typeof fields.description === 'string' && fields.description
       ? fields.description
@@ -107,6 +127,7 @@ export function parsePost(raw: string): Post {
       description,
       date,
       ...(updated ? { updated } : {}),
+      category,
       tags,
     },
     content: content.trim(),

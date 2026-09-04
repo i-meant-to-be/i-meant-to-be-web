@@ -27,6 +27,7 @@ describe('PostDetailPage', () => {
         name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
       }),
     ).toBeInTheDocument();
+    expect(screen.getByText('개발')).toBeInTheDocument();
     expect(screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/)).toBeInTheDocument();
   });
 

@@ -2,6 +2,7 @@
 title: Android 16 KB 페이징 정책과 C/C++ 빌드 - Android
 description: 그런데 왜 삼성은 갤럭시 메모리 용량에 인색할까
 date: 2025-11-23
+category: 개발
 tags: [android]
 ---
 

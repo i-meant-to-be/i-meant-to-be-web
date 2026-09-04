@@ -33,7 +33,7 @@
 
 ## 3. 코드를 변경하기 전에
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)를 먼저 읽는다. 이 문서 §5 "작업별 필수
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)를 먼저 읽는다. 이 문서 §4 "작업별 필수
   읽기" 표에 따라 관련 세부 문서를 추가로 읽는다.
 - 커밋이나 PR을 만들 때는
   [`docs/workflows/pull-request.md`](docs/workflows/pull-request.md)를 따른다.

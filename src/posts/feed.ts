@@ -123,7 +123,7 @@ export function buildRssXml(posts: PostWithId[]): string {
   const items = posts
     .map((post) => {
       const url = escapeXml(`${SITE_URL}${postPath(post)}`);
-      const categories = post.meta.tags.map(
+      const categories = [post.meta.category, ...post.meta.tags].map(
         (tag) => `      <category>${escapeXml(tag)}</category>`,
       );
       const content = toCdata(renderRssContent(post.content));

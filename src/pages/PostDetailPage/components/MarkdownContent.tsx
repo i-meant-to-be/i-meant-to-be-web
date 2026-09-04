@@ -34,6 +34,18 @@ const components: Components = {
       {children}
     </h3>
   ),
+  h4: ({ id, children }) => (
+    <h4 id={id} className="mt-5 text-lg font-bold break-keep md:mt-7 md:text-xl">
+      {children}
+    </h4>
+  ),
+  // h5는 본문(p)과 같은 크기다. 굵기로만 구분하며, 이보다 깊은 제목은 쓰지 않는다
+  // (docs/architecture/posts.md §3).
+  h5: ({ id, children }) => (
+    <h5 id={id} className="mt-4 font-bold break-keep md:mt-6 md:text-lg">
+      {children}
+    </h5>
+  ),
   p: ({ children }) => (
     <p className="mt-4 break-keep leading-[1.8] md:mt-6 md:text-lg">
       {children}

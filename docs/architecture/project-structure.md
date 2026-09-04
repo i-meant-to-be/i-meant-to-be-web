@@ -1,83 +1,85 @@
 # Project Structure
 
-이 문서는 현재 `src/` 구조와 파일 소유권을 정의한다. 라우팅과 SEO 연동은
-[`routing-and-seo.md`](routing-and-seo.md), 스타일 토큰은 [`styling.md`](styling.md)를
-기준으로 해석한다.
+`src/` 폴더 구조와 파일 배치 규칙.
 
 ## 1. 해석 원칙
 
-- 이 문서는 현재 실제 구조만 설명한다. 아직 만들어지지 않은 목표 구조를 앞서 정의하지 않는다.
-- 폴더가 비어 있거나 최소 구현이어도 그 자체를 문서 불일치로 보지 않는다.
-- 구조가 실제로 바뀌면(파일 추가/이동) 이 문서를 함께 갱신한다.
+- 현재 실제 구조만 설명함. 만들어지지 않은 목표 구조를 앞서 정의하지 않음.
+- 폴더가 비어 있거나 최소 구현이어도 문서 불일치가 아님.
+- 파일을 추가하거나 옮기면 이 문서를 함께 갱신함.
 
 ## 2. 디렉터리 구조
+
+각 파일의 책임은 주제 문서가 소유함 — 라우팅·SEO 계열은
+[`routing-and-seo.md`](routing-and-seo.md) §1, 게시물 원고는 [`posts.md`](posts.md).
 
 ```text
 src/
 ├── components/                  # 여러 페이지가 공유하는 컴포넌트
-│   ├── Layout.tsx                 # Header + children + Footer 조립, 공통 여백/배경
-│   ├── Header.tsx                 # 상단 네비게이션 (NavLink 기반)
-│   ├── HeaderButton.tsx           # Header 내부 버튼 UI (선택 상태 스타일)
-│   ├── Footer.tsx                  # 하단 외부 링크(GitHub, Instagram)
-│   ├── Seo.tsx                     # 라우트별 <head> 태그 렌더링 (routing-and-seo.md 참고)
-│   ├── seoTags.ts                  # 경로 → SEO 데이터/head 태그/프리렌더 HTML (순수 함수)
-│   └── jsonLd.ts                   # 라우트별 JSON-LD 그래프 생성 (순수 함수)
+│   ├── Layout.tsx                 # Header + children + Footer 조립
+│   ├── Header.tsx
+│   ├── HeaderButton.tsx
+│   ├── Footer.tsx
+│   ├── BorderButton.tsx
+│   ├── TagList.tsx                # 상위 분류 배지 + 태그 pill
+│   ├── Seo.tsx
+│   ├── seoTags.ts
+│   └── jsonLd.ts
 ├── pages/                        # 라우트 1개 = 페이지 폴더 1개
 │   ├── HomePage/
 │   │   ├── HomePage.tsx
-│   │   └── components/            # HomePage 전용 컴포넌트
+│   │   └── components/
 │   │       └── TextButton.tsx
 │   ├── PostPage/
-│   │   ├── PostPage.tsx           # 게시글 목록 (posts/getAllPosts 기반)
+│   │   ├── PostPage.tsx
 │   │   └── components/
-│   │       └── PostListItem.tsx   # 목록 항목 UI
+│   │       ├── PostListItem.tsx
+│   │       └── CategoryTab.tsx
 │   ├── PostDetailPage/
-│   │   ├── PostDetailPage.tsx     # 게시글 상세 (/post/:id, posts/getPostById 기반)
+│   │   ├── PostDetailPage.tsx
 │   │   └── components/
-│   │       └── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
+│   │       ├── MarkdownContent.tsx
+│   │       ├── highlight.css
+│   │       ├── TableOfContents.tsx
+│   │       ├── PostListSection.tsx
+│   │       ├── ShareButton.tsx
+│   │       └── BackToListButton.tsx
 │   ├── MusicPage/
 │   │   └── MusicPage.tsx
 │   └── NotFoundPage/
-│       └── NotFoundPage.tsx       # 알 수 없는 경로와 삭제된 게시물의 공통 오류 화면
-├── posts/                        # 게시물 로더 (코드) + content/ 원고
-│   ├── content/                   # Markdown 원고만 모아둠 (저작 규칙·이미지 정책: posts.md)
-│   │   └── 0002-how-to-....md      # 파일명이 곧 게시물 id (URL: /post/{파일명})
-│   ├── parsePost.ts               # frontmatter 파서 (순수 함수, Node 스크립트와 공유 가능)
-│   ├── extractHeadings.ts         # 본문에서 목차용 제목 추출
-│   ├── formatDate.ts              # 날짜 표시 포맷
-│   ├── feed.ts                    # 프리렌더 경로 + sitemap + 전체 본문 RSS 생성
-│   └── index.ts                   # import.meta.glob('./content/*.md')으로 전체 로드, getAllPosts/getPostById
+│       └── NotFoundPage.tsx
+├── posts/                        # 게시물 로더 + content/ 원고
+│   ├── content/                   # 원고 `.md`만 모아둠
+│   ├── parsePost.ts               # frontmatter 파서
+│   ├── extractHeadings.ts         # 목차용 제목 추출
+│   ├── formatDate.ts
+│   ├── feed.ts
+│   └── index.ts                   # 전체 로드, getAllPosts/getPostById
 ├── routes/
-│   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/POST_DETAIL/MUSIC)
-│   ├── routes.tsx                 # 경로 ↔ 페이지 컴포넌트 배열 (브라우저/프리렌더 공유)
-│   ├── router.tsx                 # routes.tsx를 createBrowserRouter에 등록 (브라우저 전용)
-│   └── seo.ts                     # 정적 라우트별 SEO 데이터 단일 소스
-├── site.ts                       # 사이트 URL/이름/저자 등 전역 상수
+│   ├── route.ts
+│   ├── routes.tsx
+│   ├── router.tsx
+│   └── seo.ts
+├── site.ts                       # 사이트 URL/이름/저자 상수
 ├── index.css                     # Tailwind 진입점 + @theme 토큰
-├── entry-server.tsx              # 프리렌더 엔트리 (renderToString + head/sitemap/RSS)
-└── main.tsx                      # React root(hydrate 또는 CSR), RouterProvider, Analytics 조립
+├── entry-server.tsx
+└── main.tsx                      # React root, RouterProvider, Analytics 조립
 ```
 
-`scripts/prerender.mjs`(저장소 루트)는 `npm run build` 마지막 단계로 실행되어 모든
-라우트를 `dist/<경로>/index.html`로 굽고 `dist/404.html`, `dist/sitemap.xml`,
-`dist/rss.xml`을 생성한다
-(파이프라인 전체: [`routing-and-seo.md`](routing-and-seo.md) §1-1).
-`scripts/check-post-images.mjs`는 `npm run build` 첫 단계로 실행되어 게시물 본문의
-이미지 참조를 검증한다 (자세한 규칙은 [`posts.md`](posts.md) §4).
+## 3. 컴포넌트 · 훅 · 타입 배치 규칙
 
-게시물 원고 자체의 작성 규칙(frontmatter, 본문 heading, 이미지 정책)은
-[`posts.md`](posts.md)가 정의한다.
+페이지 파일에는 그 페이지의 조립만 남김. 부분 컴포넌트, 훅, 타입은 아래 위치로 분리함.
 
-## 3. 컴포넌트 배치 규칙
+| 대상          | 특정 페이지에서만 사용         | 2개 이상 페이지가 공유 |
+| ------------- | ------------------------------ | ---------------------- |
+| 부분 컴포넌트 | `src/pages/{Page}/components/` | `src/components/`      |
+| 훅            | `src/pages/{Page}/hooks/`      | `src/hooks/`           |
+| 타입          | `src/pages/{Page}/types/`      | `src/types/`           |
 
-| 컴포넌트 성격          | 위치                                  |
-| ----------------------- | -------------------------------------- |
-| 2개 이상 페이지가 공유   | `src/components/`                     |
-| 특정 페이지에서만 사용   | `src/pages/{Page}/components/`        |
-| 페이지 자체              | `src/pages/{Page}/{Page}.tsx` (같은 폴더에 `{Page}.test.tsx`) |
-
-## 4. 게시물
-
-게시물 원고의 위치·네이밍·frontmatter 계약·본문 heading 규칙·이미지 정책은
-[`posts.md`](posts.md)가 정의한다. 이 문서는 `src/posts/` 폴더의 코드/원고 분리만
-다룬다 (§2 참고).
+- 페이지 자체는 `src/pages/{Page}/{Page}.tsx`, 테스트는 같은 폴더의 `{Page}.test.tsx`.
+- 한 컴포넌트에서만 쓰는 props 인터페이스는 그 컴포넌트 파일 안에 둠. `types/`는 페이지 안의
+  **여러 파일이 공유하는** 타입 자리임.
+- 페이지 전용이던 것이 두 번째 페이지에서 쓰이는 순간 공용 위치로 올림. 미리 공용으로 만들어
+  두지 않음.
+- 표의 폴더는 필요할 때 만듦. 없는 폴더가 §2 트리에 보이지 않는 것은 문서 불일치가 아님(§1).
+- `src/posts/`, `src/routes/`처럼 이미 자기 폴더를 가진 도메인 코드는 이 표의 대상이 아님.

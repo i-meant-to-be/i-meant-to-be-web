@@ -2,6 +2,7 @@
 title: 멀티 모듈 아키텍처와 Android에서의 적용 방법
 description: 자고로 모범적인 Android 개발자라면 Kotlin도 알아야 하고, Android도 알아야 하고, Gradle도 알아야 하고...
 date: 2026-05-27
+category: 개발
 tags: [android, build-logic, gradle]
 ---
 

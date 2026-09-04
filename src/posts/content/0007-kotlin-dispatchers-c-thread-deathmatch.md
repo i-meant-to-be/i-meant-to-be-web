@@ -2,6 +2,7 @@
 title: Kotlin Dispatchers와 C++ thread 멸망전 - Android
 description: 병렬 처리의 신이 되기 위한 두 번째 걸음.
 date: 2026-03-01
+category: 개발
 tags: [C++, Coroutines, kotlin]
 ---
 

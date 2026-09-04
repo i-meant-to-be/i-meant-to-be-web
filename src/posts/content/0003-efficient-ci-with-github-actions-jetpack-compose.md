@@ -2,6 +2,7 @@
 title: 효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose
 description: 캐싱과 함께 CI 시간 쌀먹하기
 date: 2025-08-04
+category: 개발
 tags: [ci, github actions, jetpack compose, 캐싱]
 ---
 

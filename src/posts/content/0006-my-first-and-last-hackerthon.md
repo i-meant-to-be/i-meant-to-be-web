@@ -2,6 +2,7 @@
 title: 인생 첫 (그리고 마지막) 해커톤 후기
 description: 잠은 보약이다
 date: 2026-02-08
+category: 개발
 tags: []
 ---
 
