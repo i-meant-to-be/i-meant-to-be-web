@@ -2,6 +2,7 @@
 title: 스레드, 스레드 풀, Coroutines와 Dispatchers - Kotlin
 description: 병렬 처리의 신이 되기 위한 첫 걸음
 date: 2026-01-28
+category: 개발
 tags: [Coroutines, Dispatchers, Thread, Thread Pool, kotlin]
 ---
 

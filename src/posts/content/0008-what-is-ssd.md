@@ -2,6 +2,7 @@
 title: 스펙 주도 개발(SDD)의 실체는 뭘까?
 description: 몰라서 공부해봤다
 date: 2026-05-06
+category: 개발
 tags: [sdd]
 ---
 

@@ -2,6 +2,7 @@
 title: 액세스/리프레시 토큰 관리 도구 구현 - Jetpack Compose
 description: 왜 모바일에서는 웹에서처럼 세션 저장소 "딸깍"하면 안 될까?
 date: 2025-08-03
+category: 개발
 tags: [jetpack compose, oAuth]
 ---
 
