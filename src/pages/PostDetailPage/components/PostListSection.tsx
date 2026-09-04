@@ -24,7 +24,7 @@ export default function PostListSection({
   return (
     <section
       className={clsx(
-        'mt-16 border-2 border-on-cream p-6 md:mt-20 md:p-8',
+        'mt-16 border-2 border-on-cream p-4 md:mt-20 md:p-8',
         className,
       )}
     >
@@ -34,9 +34,11 @@ export default function PostListSection({
           <Link
             key={post.id}
             to={`${routes.POST}/${post.id}`}
-            className="group flex flex-row items-baseline justify-between gap-4 px-2 py-2 md:py-3"
+            className="group flex flex-row items-baseline justify-between gap-4 px-2 py-2"
           >
-            <span className="break-keep md:text-lg">{post.meta.title}</span>
+            <span className="break-keep text-sm md:text-base">
+              {post.meta.title}
+            </span>
             <span className="shrink-0 text-sm text-on-cream/60 md:text-base">
               {formatDate(post.meta.date)}
             </span>
