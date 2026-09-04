@@ -2,11 +2,11 @@ import { IoLogoGithub, IoLogoInstagram } from 'react-icons/io5';
 
 export default function Footer() {
   const handleGithubProfileClick = () =>
-    window.open(import.meta.env.VITE_GITHUB_PROFILE_URL, '_blank');
+    window.open(import.meta.env.VITE_GITHUB_PROFILE_URL, '_blank', 'noopener');
   const handleInstagramClick = () =>
-    window.open(import.meta.env.VITE_INSTAGRAM_URL, '_blank');
+    window.open(import.meta.env.VITE_INSTAGRAM_URL, '_blank', 'noopener');
   const handleGithubRepoClick = () =>
-    window.open(import.meta.env.VITE_GITHUB_REPO_URL, '_blank');
+    window.open(import.meta.env.VITE_GITHUB_REPO_URL, '_blank', 'noopener');
 
   return (
     <footer className="mt-32">
