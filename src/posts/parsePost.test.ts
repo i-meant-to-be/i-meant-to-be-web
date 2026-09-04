@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parsePost } from './parsePost';
+import { CATEGORIES, parsePost } from './parsePost';
 
 describe('parsePost', () => {
   it('parses frontmatter fields and trims content', () => {
@@ -7,6 +7,7 @@ describe('parsePost', () => {
 title: 제목
 description: 설명
 date: 2025-01-01
+category: 개발
 tags: [태그1, 태그2]
 ---
 
@@ -19,6 +20,7 @@ tags: [태그1, 태그2]
       title: '제목',
       description: '설명',
       date: '2025-01-01',
+      category: '개발',
       tags: ['태그1', '태그2'],
     });
     expect(post.content).toBe('본문입니다.');
@@ -28,6 +30,7 @@ tags: [태그1, 태그2]
     const raw = `---
 title: 제목
 date: 2025-01-01
+category: 개발
 ---
 
 첫 문단입니다.
@@ -84,6 +87,7 @@ date: 2025-02-30
 title: 제목
 date: 2025-01-01
 updated: 2025-02-03
+category: 개발
 ---
 
 본문
@@ -107,6 +111,31 @@ updated: ${updated}
       ).toThrow('"updated" must be a valid YYYY-MM-DD date');
     },
   );
+
+  it('throws when category is missing', () => {
+    expect(() =>
+      parsePost(`---
+title: 제목
+date: 2025-01-01
+---
+
+본문
+`),
+    ).toThrow('missing required field "category"');
+  });
+
+  it('throws when category is not one of the allowed values', () => {
+    expect(() =>
+      parsePost(`---
+title: 제목
+date: 2025-01-01
+category: 잡담
+---
+
+본문
+`),
+    ).toThrow(`"category" must be one of: ${CATEGORIES.join(', ')}`);
+  });
 
   it('throws when updated is earlier than date', () => {
     expect(() =>

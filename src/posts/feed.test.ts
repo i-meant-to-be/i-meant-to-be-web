@@ -18,7 +18,8 @@ const posts: PostWithId[] = [
       description: '설명 2',
       date: '2026-02-03',
       updated: '2026-04-05',
-      tags: ['철학'],
+      category: '철학',
+      tags: ['하이데거'],
     },
     content: `## 본문
 
@@ -42,6 +43,7 @@ const answer = 42;
       title: '첫 번째 글',
       description: '설명 1',
       date: '2026-01-02',
+      category: '개발',
       tags: [],
     },
     content: '',
@@ -95,7 +97,10 @@ describe('buildRssXml', () => {
     expect(xml).toContain(
       '<guid isPermaLink="true">https://imeantto.be/post/0001-first</guid>',
     );
-    expect(xml).toContain('<category>철학</category>');
+    // 상위 분류(category)가 태그보다 앞서 <category>로 나간다.
+    expect(xml).toContain(
+      '<category>철학</category>\n      <category>하이데거</category>',
+    );
     expect(xml).toContain('<content:encoded><![CDATA[<h2>본문</h2>');
     expect(xml).toContain('<table>');
     expect(xml).toContain('<code class="language-ts">');
