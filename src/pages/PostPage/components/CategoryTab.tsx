@@ -12,17 +12,19 @@ export default function CategoryTab({
   selected,
   onSelect,
 }: CategoryTabProps) {
+  const tabClassName = clsx(
+    'border-2 border-indigo px-3 py-1 text-xs transition-all md:px-4 md:py-1.5 md:text-sm',
+    selected
+      ? 'bg-indigo text-cream hover:bg-indigo-enhanced'
+      : 'bg-transparent text-indigo hover:bg-indigo/10',
+  );
+
   return (
     <button
       type="button"
       aria-pressed={selected}
       onClick={onSelect}
-      className={clsx(
-        'border-2 border-indigo px-3 py-1 text-xs transition-all md:px-4 md:py-1.5 md:text-sm',
-        selected
-          ? 'bg-indigo text-cream hover:bg-indigo-enhanced'
-          : 'bg-transparent text-indigo hover:bg-indigo/10',
-      )}
+      className={tabClassName}
     >
       {label}
     </button>

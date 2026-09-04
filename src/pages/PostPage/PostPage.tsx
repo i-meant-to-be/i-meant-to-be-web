@@ -13,6 +13,9 @@ export default function PostPage() {
     ? posts.filter((post) => post.meta.category === selected)
     : posts;
 
+  const handleCategorySelect = (category: Category | null) => () =>
+    setSelected(category);
+
   return (
     <Layout>
       <Seo path={routes.POST} />
@@ -27,7 +30,7 @@ export default function PostPage() {
             key={category ?? 'all'}
             label={category ?? '전체'}
             selected={selected === category}
-            onSelect={() => setSelected(category)}
+            onSelect={handleCategorySelect(category)}
           />
         ))}
       </div>

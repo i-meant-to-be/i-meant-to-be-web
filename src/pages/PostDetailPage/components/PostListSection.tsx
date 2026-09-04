@@ -21,6 +21,11 @@ export default function PostListSection({
   const start = page * PAGE_SIZE;
   const visiblePosts = posts.slice(start, start + PAGE_SIZE);
 
+  const handlePreviousClick = () =>
+    setPage((current) => Math.max(0, current - 1));
+  const handleNextClick = () =>
+    setPage((current) => Math.min(totalPages - 1, current + 1));
+
   return (
     <section
       className={clsx(
@@ -49,7 +54,7 @@ export default function PostListSection({
         <div className="mt-4 flex flex-row items-center justify-center gap-4 md:mt-6 md:gap-6">
           <button
             type="button"
-            onClick={() => setPage((current) => Math.max(0, current - 1))}
+            onClick={handlePreviousClick}
             disabled={page === 0}
             className="text-sm text-indigo hover:text-indigo-enhanced disabled:text-on-cream/30 md:text-base"
           >
@@ -60,9 +65,7 @@ export default function PostListSection({
           </span>
           <button
             type="button"
-            onClick={() =>
-              setPage((current) => Math.min(totalPages - 1, current + 1))
-            }
+            onClick={handleNextClick}
             disabled={page === totalPages - 1}
             className="text-sm text-indigo hover:text-indigo-enhanced disabled:text-on-cream/30 md:text-base"
           >
