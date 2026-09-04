@@ -35,7 +35,11 @@ export default function PostDetailPage() {
         <h1 className="text-4xl font-bold break-keep mb-8 md:text-5xl md:mb-10">
           {post.meta.title}
         </h1>
-        <TagList tags={post.meta.tags} className="mb-2 md:mb-3" />
+        <TagList
+          category={post.meta.category}
+          tags={post.meta.tags}
+          className="mb-2 md:mb-3"
+        />
         <p className="mb-8 text-sm text-on-cream/60 md:mb-10 md:text-base">
           {formatDate(post.meta.date)}
         </p>

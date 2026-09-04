@@ -47,7 +47,8 @@ export function resolveSeoData(path: string): SeoData {
       article: {
         publishedTime: post.meta.date,
         ...(post.meta.updated ? { modifiedTime: post.meta.updated } : {}),
-        tags: post.meta.tags,
+        // category는 태그의 상위 분류이므로 태그 목록 맨 앞에 함께 노출한다.
+        tags: [post.meta.category, ...post.meta.tags],
       },
     };
   }

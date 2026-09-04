@@ -1,5 +1,8 @@
 import { parsePost, type Post } from './parsePost';
 
+export { CATEGORIES } from './parsePost';
+export type { Category } from './parsePost';
+
 export interface PostWithId extends Post {
   id: string;
 }
