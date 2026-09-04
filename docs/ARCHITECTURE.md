@@ -29,7 +29,7 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | Routing   | react-router-dom (`createBrowserRouter`, CSR + 빌드타임 프리렌더) |
 | Styling   | Tailwind CSS 4 (`@theme` 토큰)                          |
 | Test      | Vitest + Testing Library                                |
-| Hosting   | Vercel 정적 호스팅 (라우트별 프리렌더 HTML + `vercel.json` rewrite fallback) |
+| Hosting   | Vercel 정적 호스팅 (유효 라우트별 프리렌더 HTML + 루트 `404.html`) |
 | Analytics | `@vercel/analytics`                                     |
 | SEO       | React 19 네이티브 metadata hoisting + `src/components/seoTags.ts` (`seo.ts` / 게시물 frontmatter 조회) |
 
@@ -43,8 +43,8 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
   (`routing-and-seo.md` §5 체크리스트 참고).
 - `sitemap.xml`과 `rss.xml`은 `npm run build`가 `dist/`에 생성하는 산출물이다. 손으로
   만들거나 커밋하지 않는다.
-- `vercel.json`의 SPA rewrite는 삭제하지 않는다 — 제거하면 `/` 이외의 모든 라우트가 실제
-  404를 반환한다.
+- 모든 공개 URL은 빌드 시 정적 HTML로 생성한다. 존재하지 않는 경로를 `index.html`로
+  rewrite하지 않고 루트 `404.html` 본문과 실제 HTTP 404로 응답한다.
 - `.env`의 실제 값(URL 등)은 커밋하지 않는다. `.env`는 `.gitignore`에 있어야 한다.
 - 페이지 간 이동은 `react-router-dom`의 `Link`/`NavLink`만 쓴다. 내부 라우트에
   `window.open`을 쓰면 크롤러가 링크를 발견하지 못한다.
@@ -63,7 +63,7 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | --------------------------------------------------------------- | --------------------------------------------------------------- |
 | [`project-structure.md`](architecture/project-structure.md)     | 폴더 구조, 페이지/컴포넌트 소유권, 아직 연결되지 않은 것        |
 | [`posts.md`](architecture/posts.md)                             | 게시물 저작 계약 — frontmatter, 본문 heading, 이미지 정책        |
-| [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / 프리렌더 / vercel.json / sitemap·RSS 연동 계약 |
+| [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / 프리렌더 / 404 / sitemap·RSS 연동 계약 |
 | [`styling.md`](architecture/styling.md)                         | Tailwind 컬러 토큰, 클래스 작성 규칙                              |
 
 ## 5. 작업별 필수 읽기
