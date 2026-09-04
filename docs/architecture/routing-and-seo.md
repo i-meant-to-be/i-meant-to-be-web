@@ -30,7 +30,8 @@
 2. `tsc -b` — 타입체크
 3. `vite build` — 클라이언트 번들 (`dist/`)
 4. `vite build --ssr src/entry-server.tsx --outDir dist-ssr` — 프리렌더용 서버 번들
-5. `scripts/prerender.mjs` — 라우트별 정적 HTML + `dist/sitemap.xml` + `dist/rss.xml`
+5. `scripts/prerender.mjs` — 라우트별 정적 HTML + `dist/404.html` + `dist/sitemap.xml` +
+   `dist/rss.xml`
 
 ## 2. 왜 프리렌더가 필요한가
 
