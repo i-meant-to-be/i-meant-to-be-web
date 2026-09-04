@@ -40,9 +40,14 @@ describe('renderHeadHtml', () => {
   });
 
   it('marks a missing post noindex and keeps the site title suffix off the root', () => {
-    expect(renderHeadHtml('/post/nope')).toContain(
+    const notFoundHead = renderHeadHtml('/post/nope');
+
+    expect(notFoundHead).toContain(
       '<meta name="robots" content="noindex, follow" />',
     );
+    expect(notFoundHead).not.toContain('rel="canonical"');
+    expect(notFoundHead).not.toContain('property="og:url"');
+    expect(notFoundHead).not.toContain('application/ld+json');
     expect(renderHeadHtml('/')).toContain('<title>imeanttobe</title>');
   });
 

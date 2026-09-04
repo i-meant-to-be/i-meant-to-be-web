@@ -2,6 +2,7 @@ export interface PostMeta {
   title: string;
   description: string;
   date: string;
+  updated?: string;
   tags: string[];
 }
 
@@ -77,9 +78,21 @@ export function parsePost(raw: string): Post {
     throw new Error('Post frontmatter is missing required field "date".');
   }
   if (!isValidDate(date)) {
-    throw new Error(
-      'Post frontmatter "date" must be a valid YYYY-MM-DD date.',
-    );
+    throw new Error('Post frontmatter "date" must be a valid YYYY-MM-DD date.');
+  }
+
+  const updated = fields.updated;
+  if (updated !== undefined) {
+    if (typeof updated !== 'string' || !isValidDate(updated)) {
+      throw new Error(
+        'Post frontmatter "updated" must be a valid YYYY-MM-DD date.',
+      );
+    }
+    if (updated < date) {
+      throw new Error(
+        'Post frontmatter "updated" must not be earlier than "date".',
+      );
+    }
   }
 
   const description =
@@ -89,7 +102,13 @@ export function parsePost(raw: string): Post {
   const tags = Array.isArray(fields.tags) ? fields.tags : [];
 
   return {
-    meta: { title, description, date, tags },
+    meta: {
+      title,
+      description,
+      date,
+      ...(updated ? { updated } : {}),
+      tags,
+    },
     content: content.trim(),
   };
 }

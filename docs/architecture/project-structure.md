@@ -35,15 +35,17 @@ src/
 │   │   ├── PostDetailPage.tsx     # 게시글 상세 (/post/:id, posts/getPostById 기반)
 │   │   └── components/
 │   │       └── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
-│   └── MusicPage/
-│       └── MusicPage.tsx
+│   ├── MusicPage/
+│   │   └── MusicPage.tsx
+│   └── NotFoundPage/
+│       └── NotFoundPage.tsx       # 알 수 없는 경로와 삭제된 게시물의 공통 오류 화면
 ├── posts/                        # 게시물 로더 (코드) + content/ 원고
 │   ├── content/                   # Markdown 원고만 모아둠 (저작 규칙·이미지 정책: posts.md)
-│   │   └── 0001-hello-world.md    # 파일명이 곧 게시물 id (URL: /post/{파일명})
+│   │   └── 0002-how-to-....md      # 파일명이 곧 게시물 id (URL: /post/{파일명})
 │   ├── parsePost.ts               # frontmatter 파서 (순수 함수, Node 스크립트와 공유 가능)
 │   ├── extractHeadings.ts         # 본문에서 목차용 제목 추출
 │   ├── formatDate.ts              # 날짜 표시 포맷
-│   ├── feed.ts                    # 프리렌더 경로 목록 + sitemap/RSS XML 생성 (순수 함수)
+│   ├── feed.ts                    # 프리렌더 경로 + sitemap + 전체 본문 RSS 생성
 │   └── index.ts                   # import.meta.glob('./content/*.md')으로 전체 로드, getAllPosts/getPostById
 ├── routes/
 │   ├── route.ts                   # 라우트 경로 상수 (ROOT/POST/POST_DETAIL/MUSIC)
@@ -57,7 +59,8 @@ src/
 ```
 
 `scripts/prerender.mjs`(저장소 루트)는 `npm run build` 마지막 단계로 실행되어 모든
-라우트를 `dist/<경로>/index.html`로 굽고 `dist/sitemap.xml`, `dist/rss.xml`을 생성한다
+라우트를 `dist/<경로>/index.html`로 굽고 `dist/404.html`, `dist/sitemap.xml`,
+`dist/rss.xml`을 생성한다
 (파이프라인 전체: [`routing-and-seo.md`](routing-and-seo.md) §1-1).
 `scripts/check-post-images.mjs`는 `npm run build` 첫 단계로 실행되어 게시물 본문의
 이미지 참조를 검증한다 (자세한 규칙은 [`posts.md`](posts.md) §4).

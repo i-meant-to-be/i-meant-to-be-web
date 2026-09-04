@@ -30,22 +30,30 @@ function write(filePath, contents) {
   writeFileSync(filePath, contents);
 }
 
+function renderPage(routePath) {
+  const { html, head } = render(routePath);
+  return (
+    template
+      .replace(ROOT_PLACEHOLDER, `<div id="root">${html}</div>`)
+      // 템플릿의 정적 <title>은 라우트별 태그로 대체된다.
+      .replace(/\s*<title>[^<]*<\/title>/, '')
+      .replace('</head>', `  ${head}\n  </head>`)
+  );
+}
+
 const paths = getPaths();
 
 for (const routePath of paths) {
-  const { html, head } = render(routePath);
-  const page = template
-    .replace(ROOT_PLACEHOLDER, `<div id="root">${html}</div>`)
-    // 템플릿의 정적 <title>은 라우트별 태그로 대체된다.
-    .replace(/\s*<title>[^<]*<\/title>/, '')
-    .replace('</head>', `  ${head}\n  </head>`);
-
-  write(outputPathFor(routePath), page);
+  write(outputPathFor(routePath), renderPage(routePath));
 }
+
+// Vercel은 루트의 404.html을 없는 정적 경로의 응답 본문으로 사용하고
+// 상태 코드는 404로 유지한다. 색인·일반 프리렌더 경로에는 포함하지 않는다.
+write(path.join(distDir, '404.html'), renderPage('/404'));
 
 write(path.join(distDir, 'sitemap.xml'), getSitemapXml());
 write(path.join(distDir, 'rss.xml'), getRssXml());
 
 console.log(
-  `prerendered ${paths.length} pages, plus sitemap.xml and rss.xml.`,
+  `prerendered ${paths.length} pages and 404.html, plus sitemap.xml and rss.xml.`,
 );

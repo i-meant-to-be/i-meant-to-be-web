@@ -10,6 +10,7 @@ export default function PostPage() {
   return (
     <Layout>
       <Seo path={routes.POST} />
+      <h1 className="sr-only">게시글</h1>
       <p className="text-sm text-on-cream/60 md:text-base">
         총 {posts.length}건의 게시물
       </p>
