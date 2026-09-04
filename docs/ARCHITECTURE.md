@@ -51,8 +51,14 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 - 외부 링크는 `<a href target="_blank" rel="noreferrer noopener">`를 기본으로 하고,
   버튼 UI가 필요한 경우에만 `window.open`을 쓴다. 문장 안에 흐르는 링크에는 블록 레벨
   요소를 쓰지 않는다 — 크롤러가 문장을 끊어 검색 스니펫이 깨진다.
-- 공용 컴포넌트는 `src/components/`, 페이지 전용 컴포넌트는
-  `src/pages/{Page}/components/`에 둔다.
+- 공용 컴포넌트·훅·타입은 `src/{components,hooks,types}/`, 페이지 전용은
+  `src/pages/{Page}/{components,hooks,types}/`에 둔다
+  (`project-structure.md` §3).
+- React 컴포넌트는 `export default function Name() {}` 함수 선언형으로 쓴다. JSX 안에
+  인라인 함수를 두지 않고 `useEffect` 콜백은 기명 함수로 쓴다
+  (`react-conventions.md` §1·§3·§4).
+- 스타일은 모바일이 기본이고 데스크톱이 `md:`다. 기본 클래스에 데스크톱 값을 쓰지 않는다
+  (`styling.md` §4).
 
 세부 금지사항과 예외 조건은 관련 주제 문서에서 확인한다. 이 요약만으로 세부 문서를 대체하지
 않는다.
@@ -64,7 +70,8 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 | [`project-structure.md`](architecture/project-structure.md)     | 폴더 구조, 페이지/컴포넌트 소유권, 아직 연결되지 않은 것        |
 | [`posts.md`](architecture/posts.md)                             | 게시물 저작 계약 — frontmatter, 본문 heading, 이미지 정책        |
 | [`routing-and-seo.md`](architecture/routing-and-seo.md)         | route.ts / seo.ts / Seo.tsx / 프리렌더 / 404 / sitemap·RSS 연동 계약 |
-| [`styling.md`](architecture/styling.md)                         | Tailwind 컬러 토큰, 클래스 작성 규칙                              |
+| [`styling.md`](architecture/styling.md)                         | Tailwind 컬러 토큰, 클래스 작성 규칙, 반응형(`md:`) 규칙            |
+| [`react-conventions.md`](architecture/react-conventions.md)     | React 코드 컨벤션 — 컴포넌트 선언, 본문 순서, 핸들러, `useEffect`   |
 
 ## 5. 작업별 필수 읽기
 
@@ -72,10 +79,11 @@ React 19, react-router-dom, Tailwind CSS 4를 기준으로 구성하며 Vercel�
 
 | 작업                              | 필수 세부 문서                          |
 | --------------------------------- | ---------------------------------------- |
-| 새 페이지/라우트 추가             | `project-structure.md`, `routing-and-seo.md` |
+| 새 페이지/라우트 추가             | `project-structure.md`, `routing-and-seo.md`, `react-conventions.md` |
 | 게시물 추가 또는 수정             | `project-structure.md`, `posts.md` (외부 원고 이관은 `docs/workflows/add-new-post.md`) |
 | 페이지 title/description 변경     | `routing-and-seo.md`                     |
-| 공용 컴포넌트 추가 또는 변경      | `project-structure.md`, `styling.md`     |
+| 공용 컴포넌트 추가 또는 변경      | `project-structure.md`, `styling.md`, `react-conventions.md` |
+| 컴포넌트·훅·타입 코드 작성 또는 리팩터링 | `react-conventions.md`, `project-structure.md`, `styling.md` |
 | 색상, 폰트 등 디자인 토큰 변경    | `styling.md`                             |
 | 커밋 또는 PR 생성                 | `docs/workflows/pull-request.md`         |
 

@@ -1,8 +1,9 @@
 # Project Structure
 
 이 문서는 현재 `src/` 구조와 파일 소유권을 정의한다. 라우팅과 SEO 연동은
-[`routing-and-seo.md`](routing-and-seo.md), 스타일 토큰은 [`styling.md`](styling.md)를
-기준으로 해석한다.
+[`routing-and-seo.md`](routing-and-seo.md), 스타일 토큰은 [`styling.md`](styling.md),
+컴포넌트 코드 작성 규칙은 [`react-conventions.md`](react-conventions.md)를 기준으로
+해석한다.
 
 ## 1. 해석 원칙
 
@@ -14,11 +15,13 @@
 
 ```text
 src/
-├── components/                  # 여러 페이지가 공유하는 컴포넌트
+├── components/                  # 여러 페이지가 공유하는 컴포넌트 (배치 규칙: §3)
 │   ├── Layout.tsx                 # Header + children + Footer 조립, 공통 여백/배경
 │   ├── Header.tsx                 # 상단 네비게이션 (NavLink 기반)
 │   ├── HeaderButton.tsx           # Header 내부 버튼 UI (선택 상태 스타일)
 │   ├── Footer.tsx                  # 하단 외부 링크(GitHub, Instagram)
+│   ├── BorderButton.tsx            # 테두리 버튼 UI (색상 prop)
+│   ├── TagList.tsx                 # 상위 분류 배지 + 태그 pill 목록 (posts.md §2)
 │   ├── Seo.tsx                     # 라우트별 <head> 태그 렌더링 (routing-and-seo.md 참고)
 │   ├── seoTags.ts                  # 경로 → SEO 데이터/head 태그/프리렌더 HTML (순수 함수)
 │   └── jsonLd.ts                   # 라우트별 JSON-LD 그래프 생성 (순수 함수)
@@ -30,11 +33,17 @@ src/
 │   ├── PostPage/
 │   │   ├── PostPage.tsx           # 게시글 목록 (posts/getAllPosts 기반)
 │   │   └── components/
-│   │       └── PostListItem.tsx   # 목록 항목 UI
+│   │       ├── PostListItem.tsx   # 목록 항목 UI
+│   │       └── CategoryTab.tsx    # 철학/개발 상위 분류 필터 탭
 │   ├── PostDetailPage/
 │   │   ├── PostDetailPage.tsx     # 게시글 상세 (/post/:id, posts/getPostById 기반)
 │   │   └── components/
-│   │       └── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
+│   │       ├── MarkdownContent.tsx  # react-markdown 렌더링 + 디자인 토큰 매핑
+│   │       ├── highlight.css        # rehype-highlight 전용 CSS (styling.md §5 예외)
+│   │       ├── TableOfContents.tsx  # extractHeadings 결과를 목차로 렌더
+│   │       ├── PostListSection.tsx  # 하단 전체 게시글 페이지네이션 목록
+│   │       ├── ShareButton.tsx      # 현재 URL 클립보드 복사
+│   │       └── BackToListButton.tsx # 목록으로 돌아가기
 │   ├── MusicPage/
 │   │   └── MusicPage.tsx
 │   └── NotFoundPage/
@@ -68,13 +77,27 @@ src/
 게시물 원고 자체의 작성 규칙(frontmatter, 본문 heading, 이미지 정책)은
 [`posts.md`](posts.md)가 정의한다.
 
-## 3. 컴포넌트 배치 규칙
+## 3. 컴포넌트 · 훅 · 타입 배치 규칙
 
-| 컴포넌트 성격          | 위치                                  |
-| ----------------------- | -------------------------------------- |
-| 2개 이상 페이지가 공유   | `src/components/`                     |
-| 특정 페이지에서만 사용   | `src/pages/{Page}/components/`        |
-| 페이지 자체              | `src/pages/{Page}/{Page}.tsx` (같은 폴더에 `{Page}.test.tsx`) |
+페이지 파일에는 그 페이지의 조립만 남긴다. 부분 컴포넌트, 훅, 타입은 성격에 따라 아래
+위치로 분리한다.
+
+| 대상          | 특정 페이지에서만 사용         | 2개 이상 페이지가 공유 |
+| ------------- | ------------------------------ | ---------------------- |
+| 부분 컴포넌트 | `src/pages/{Page}/components/` | `src/components/`      |
+| 훅            | `src/pages/{Page}/hooks/`      | `src/hooks/`           |
+| 타입          | `src/pages/{Page}/types/`      | `src/types/`           |
+
+- 페이지 자체는 `src/pages/{Page}/{Page}.tsx`, 테스트는 같은 폴더의 `{Page}.test.tsx`.
+- 한 컴포넌트에서만 쓰는 props 인터페이스는 `types/`로 빼지 않고 그 컴포넌트 파일 안에
+  둔다 (`react-conventions.md` §1). `types/`는 페이지 안의 **여러 파일이 공유하는** 타입을
+  위한 자리다.
+- 페이지 전용이던 것이 두 번째 페이지에서 쓰이는 순간 `src/` 아래 공용 위치로 올린다.
+  미리 공용으로 만들어 두지 않는다.
+- 위 표의 폴더는 **필요할 때 만든다.** 아직 없는 폴더가 §2 트리에 보이지 않는 것은 문서
+  불일치가 아니다 (§1). 폴더를 실제로 추가하면 §2 트리도 함께 갱신한다.
+- 게시물 로더(`src/posts/`), 라우팅(`src/routes/`)처럼 이미 자기 폴더를 가진 도메인 코드는
+  이 표의 대상이 아니다. 해당 폴더 안에 그대로 둔다.
 
 ## 4. 게시물
 
