@@ -15,5 +15,10 @@ describe('Seo', () => {
         .querySelector('meta[property="og:type"]')
         ?.getAttribute('content'),
     ).toBe('website');
+    expect(
+      document.head
+        .querySelector('meta[property="og:image"]')
+        ?.getAttribute('content'),
+    ).toBe('https://imeantto.be/og-image.png');
   });
 });
