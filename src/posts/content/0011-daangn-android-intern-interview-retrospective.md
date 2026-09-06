@@ -1,6 +1,6 @@
 ---
 title: 뒤늦은 당근 Android 인턴 면접 회고
-description: 2026년 7월 당근 Android 인턴 면접 뜨거운 합격 후기
+description: 2026년 7월 당근 면접 뜨거운 합격 생생 후기
 date: 2026-09-07
 category: 개발
 tags: [Android, 면접, 당근, AI]
