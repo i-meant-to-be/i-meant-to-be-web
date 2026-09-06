@@ -50,9 +50,12 @@ describe('PostPage', () => {
 
     expect(philosophy).toHaveAttribute('aria-pressed', 'true');
     expect(all).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByText('총 1건의 게시물')).toBeInTheDocument();
+    expect(screen.getByText('총 2건의 게시물')).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: /하이데거/ }),
+      screen.getByRole('link', { name: /강독 1일차/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /강독 2일차/ }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: /효율적인 Android CI 구축/ }),
