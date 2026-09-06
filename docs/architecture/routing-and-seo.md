@@ -11,6 +11,7 @@
 | `src/routes/router.tsx`            | `routes.tsx`를 `createBrowserRouter`에 넘기는 브라우저 전용 래퍼                                              |
 | `src/routes/seo.ts`                | **정적** 라우트별 `{ title, description, noindex }`의 단일 소스                                               |
 | `src/components/seoTags.ts`        | 경로 → SEO 데이터(`resolveSeoData`), head 태그 목록(`buildSeoTags`), 프리렌더용 HTML 문자열(`renderHeadHtml`) |
+| `public/og-image.png`              | 모든 라우트의 `og:image`에 사용하는 공유 미리보기 이미지                                                     |
 | `src/components/jsonLd.ts`         | 라우트별 JSON-LD 그래프 (`BlogPosting`/`WebSite`/`WebPage`/`BreadcrumbList`)                                  |
 | `src/components/Seo.tsx`           | `seoTags.ts`의 결과를 렌더. 프리렌더 중에는 아무것도 렌더하지 않음 (§4)                                       |
 | `src/entry-server.tsx`             | 프리렌더 엔트리. 경로별 `render()`와 sitemap/RSS 생성 함수를 export                                           |
@@ -66,6 +67,9 @@ CSR SPA라 프리렌더가 없으면 배포 HTML의 `<body>`가 `<div id="root">
 `twitter:*`, JSON-LD)는 전부 `seoTags.ts`가 소유하고 `index.html`에서 제거되어 있음.
 `index.html`에는 라우트와 무관한 태그(favicon, RSS `link`, `og:site_name`, `og:locale`,
 `keywords`, `author`)만 남김. 양쪽에 같은 이름의 태그를 두면 중복 태그가 됨.
+
+모든 라우트의 `og:image`는 `public/og-image.png`를 사용하며, `seoTags.ts`가 `SITE_URL` 기준 절대
+URL로 생성함. 브라우저와 프리렌더가 같은 태그 생성 경로를 공유함.
 
 태그가 `<head>`에 도달하는 경로는 둘임.
 
