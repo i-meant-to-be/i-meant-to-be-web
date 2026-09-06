@@ -115,5 +115,6 @@ npm run build
 [`pull-request.md`](pull-request.md)를 그대로 따름.
 
 - 라벨 `feat` (`[FEAT]`).
+- PR 제목은 `새 게시물 추가`로 통일. 새 게시물 내용을 요약하여 제목을 임의로 정하지 않음.
 - 게시물 `.md` + 이미지는 한 커밋. 문서 변경이 섞이면 라벨별로 분리 (`pull-request.md` §2·§3).
 - Push / PR 생성 전 확인 게이트 (`pull-request.md` §8).
