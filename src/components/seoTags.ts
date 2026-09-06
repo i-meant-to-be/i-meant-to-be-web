@@ -1,4 +1,4 @@
-import { AUTHOR_NAME, SITE_NAME, SITE_URL } from '../site';
+import { AUTHOR_NAME, OG_IMAGE_URL, SITE_NAME, SITE_URL } from '../site';
 import routes from '../routes/route';
 import seo from '../routes/seo';
 import { getPostById } from '../posts';
@@ -96,6 +96,7 @@ export function buildSeoTags(path: string, data: SeoData): SeoTag[] {
       tag: 'meta',
       attrs: { property: 'og:description', content: description },
     },
+    { tag: 'meta', attrs: { property: 'og:image', content: OG_IMAGE_URL } },
     ...(data.notFound
       ? []
       : [

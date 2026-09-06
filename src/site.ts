@@ -9,3 +9,4 @@ export const SITE_NAME = 'imeanttobe';
 export const SITE_LOCALE = 'ko_KR';
 export const SITE_LANGUAGE = 'ko-KR';
 export const AUTHOR_NAME = 'Shawn Kang';
+export const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;

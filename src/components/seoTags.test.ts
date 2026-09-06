@@ -33,6 +33,9 @@ describe('renderHeadHtml', () => {
     expect(html).toContain(`<title>${post.meta.title} | imeanttobe</title>`);
     expect(html).toContain('<meta property="og:type" content="article" />');
     expect(html).toContain(
+      '<meta property="og:image" content="https://imeantto.be/og-image.png" />',
+    );
+    expect(html).toContain(
       `<link rel="canonical" href="https://imeantto.be/post/${post.id}" />`,
     );
     expect(html).toContain('"@type":"BlogPosting"');
