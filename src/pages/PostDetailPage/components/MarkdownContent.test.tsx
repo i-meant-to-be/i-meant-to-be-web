@@ -1,0 +1,22 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import MarkdownContent from './MarkdownContent';
+
+describe('MarkdownContent', () => {
+  it('uses the responsive paragraph text size', () => {
+    render(<MarkdownContent content="본문" />);
+
+    expect(screen.getByText('본문')).toHaveClass('text-sm', 'md:text-lg');
+  });
+
+  it('renders normalized emphasis without exposing Markdown markers', () => {
+    render(
+      <MarkdownContent content={`'**내용**'으로 **한국어**(English)는 '***강한 강조***'`} />,
+    );
+
+    expect(screen.getByText('내용').closest('strong')).not.toBeNull();
+    expect(screen.getByText('한국어').closest('strong')).not.toBeNull();
+    expect(screen.getByText('강한 강조').closest('strong')).not.toBeNull();
+    expect(document.body).not.toHaveTextContent('**');
+  });
+});

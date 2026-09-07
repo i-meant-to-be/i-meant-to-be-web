@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import routeObjects from '../../routes/routes';
 
 describe('NotFoundPage', () => {
   it('renders for an unknown route and links back to valid pages', () => {
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
     const router = createMemoryRouter(routeObjects, {
       initialEntries: ['/no-such-page'],
     });
