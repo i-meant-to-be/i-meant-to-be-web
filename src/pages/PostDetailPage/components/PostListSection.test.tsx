@@ -28,7 +28,8 @@ describe('PostListSection', () => {
 
     expect(screen.getByText(posts[0].meta.title)).toHaveClass(
       'min-w-0',
-      'line-clamp-2',
+      'line-clamp-1',
+      'md:line-clamp-2',
     );
     expect(screen.getByText('2026년 9월 7일')).toHaveClass(
       'hidden',
