@@ -42,7 +42,10 @@ const components: Components = {
   // h5는 본문(p)과 같은 크기다. 굵기로만 구분하며, 이보다 깊은 제목은 쓰지 않는다
   // (docs/architecture/posts.md §3).
   h5: ({ id, children }) => (
-    <h5 id={id} className="mt-4 font-bold break-keep md:mt-6 md:text-lg">
+    <h5
+      id={id}
+      className="mt-4 text-sm font-bold break-keep md:mt-6 md:text-lg"
+    >
       {children}
     </h5>
   ),
