@@ -47,7 +47,7 @@ const components: Components = {
     </h5>
   ),
   p: ({ children }) => (
-    <p className="mt-4 break-keep leading-[1.8] md:mt-6 md:text-lg">
+    <p className="mt-4 text-sm break-keep leading-[1.8] md:mt-6 md:text-lg">
       {children}
     </p>
   ),
