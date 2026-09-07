@@ -5,6 +5,7 @@ import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import MusicPage from '../pages/MusicPage/MusicPage';
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import routes from './route';
+import ScrollToTop from './ScrollToTop';
 
 /**
  * 라우트 정의의 단일 소스. 브라우저(`router.tsx`)와 프리렌더
@@ -12,24 +13,29 @@ import routes from './route';
  */
 const routeObjects: RouteObject[] = [
   {
-    path: routes.ROOT,
-    element: <HomePage />,
-  },
-  {
-    path: routes.POST,
-    element: <PostPage />,
-  },
-  {
-    path: routes.POST_DETAIL,
-    element: <PostDetailPage />,
-  },
-  {
-    path: routes.MUSIC,
-    element: <MusicPage />,
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
+    element: <ScrollToTop />,
+    children: [
+      {
+        path: routes.ROOT,
+        element: <HomePage />,
+      },
+      {
+        path: routes.POST,
+        element: <PostPage />,
+      },
+      {
+        path: routes.POST_DETAIL,
+        element: <PostDetailPage />,
+      },
+      {
+        path: routes.MUSIC,
+        element: <MusicPage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
+    ],
   },
 ];
 
