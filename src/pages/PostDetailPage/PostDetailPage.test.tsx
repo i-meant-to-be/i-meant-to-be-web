@@ -22,11 +22,10 @@ describe('PostDetailPage', () => {
   it('renders an existing post', () => {
     renderAt('/post/0003-efficient-ci-with-github-actions-jetpack-compose');
 
-    expect(
-      screen.getByRole('heading', {
-        name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
-      }),
-    ).toBeInTheDocument();
+    const title = screen.getByRole('heading', {
+      name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
+    });
+    expect(title).toHaveClass('tracking-[-0.05em]', 'leading-[1.05]');
     expect(screen.getByText('개발')).toBeInTheDocument();
     expect(screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/)).toBeInTheDocument();
   });

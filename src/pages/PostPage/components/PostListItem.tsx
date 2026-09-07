@@ -22,7 +22,7 @@ export default function PostListItem({ post }: PostListItemProps) {
       <span className="mt-4 text-xl font-bold break-keep md:mt-6 md:text-2xl">
         {meta.title}
       </span>
-      <span className="mt-1 break-keep text-on-cream/80 md:mt-2 md:text-lg">
+      <span className="mt-1 break-keep text-sm text-on-cream/80 md:mt-2 md:text-base">
         {meta.description}
       </span>
       <TagList

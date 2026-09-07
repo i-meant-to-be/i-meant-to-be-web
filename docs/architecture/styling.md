@@ -14,6 +14,12 @@ Tailwind CSS 4 컬러 토큰과 클래스 작성 규칙.
 | `on-cream-enhanced` | `#1a1a1a` | `on-cream`의 hover/강조 상태 |
 | `indigo`            | `#0000a1` | 강조색 (버튼, 선택 상태)     |
 | `indigo-enhanced`   | `#000054` | `indigo`의 hover/강조 상태   |
+| `rose`              | `#b3253f` | 코드 문자열 등 보조 강조     |
+| `amber`             | `#b35a0f` | 코드 숫자 등 보조 강조       |
+| `teal`              | `#1f7a66` | 철학 분류와 코드 타입 강조   |
+
+`rose`·`amber`·`teal`은 `indigo`(HSL 240°)와 남색 계열을 피한 스플릿 컴플리멘터리·삼각 배색의
+보조축임. `cream` 배경에서 읽히도록 명도를 낮게 유지함.
 
 `-enhanced` 접미사는 같은 역할의 색을 한 단계 진하게 쓸 때(주로 `hover:`)의 명명 규칙임. 새
 강조색도 이 규칙을 따름.
