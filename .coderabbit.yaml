@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: 'ko-KR'
 reviews:
   path_filters:
     # 블로그 게시물 원고는 코드가 아니므로 리뷰 대상에서 제외한다.
-    - "!src/posts/content/**"
+    - '!src/posts/content/**'
     # 게시물 이미지 애셋.
-    - "!public/posts/**"
+    - '!public/posts/**'
