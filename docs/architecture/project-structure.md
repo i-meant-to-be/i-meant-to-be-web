@@ -56,6 +56,7 @@ src/
 │   ├── feed.ts
 │   └── index.ts                   # 전체 로드, getAllPosts/getPostById
 ├── routes/
+│   ├── ScrollToTop.tsx            # 경로 변경 시 스크롤 위치 초기화
 │   ├── route.ts
 │   ├── routes.tsx
 │   ├── router.tsx
