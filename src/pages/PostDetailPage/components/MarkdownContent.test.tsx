@@ -9,6 +9,15 @@ describe('MarkdownContent', () => {
     expect(screen.getByText('본문')).toHaveClass('text-sm', 'md:text-lg');
   });
 
+  it('uses the responsive text size for level-five headings', () => {
+    render(<MarkdownContent content="##### 다섯 번째 단계 제목" />);
+
+    expect(screen.getByRole('heading', { level: 5 })).toHaveClass(
+      'text-sm',
+      'md:text-lg',
+    );
+  });
+
   it('uses the responsive text size for list items', () => {
     render(<MarkdownContent content="- 목록 항목" />);
 
