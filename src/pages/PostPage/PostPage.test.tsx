@@ -32,6 +32,15 @@ describe('PostPage', () => {
       document.head.querySelector('meta[name="description"]'),
     ).toHaveAttribute('content', '내가 공부하고 만든 것들에 대한 기록들.');
     expect(screen.getByText(/총 \d+건의 게시물/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '전체' })).toHaveClass(
+      'border-on-cream',
+    );
+    expect(screen.getByRole('button', { name: '개발' })).toHaveClass(
+      'border-indigo',
+    );
+    expect(screen.getByRole('button', { name: '철학' })).toHaveClass(
+      'border-teal',
+    );
     expect(
       screen.getByRole('link', { name: /효율적인 Android CI 구축/ }),
     ).toBeInTheDocument();

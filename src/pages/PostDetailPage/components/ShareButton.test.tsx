@@ -14,11 +14,8 @@ describe('ShareButton', () => {
     await user.click(screen.getByRole('button', { name: '게시글 링크 복사' }));
 
     expect(writeText).toHaveBeenCalledWith(window.location.href);
-    expect(screen.getByText('복사됨').parentElement).not.toHaveClass(
-      'invisible',
-    );
     expect(screen.getByText('복사됨')).toHaveClass('hidden', 'md:inline');
-    expect(screen.getByText('공유').parentElement).toHaveClass('invisible');
+    expect(screen.queryByText('공유')).not.toBeInTheDocument();
   });
 
   it('shows a failed state instead of throwing when the clipboard write rejects', async () => {
@@ -30,9 +27,7 @@ describe('ShareButton', () => {
 
     await user.click(screen.getByRole('button', { name: '게시글 링크 복사' }));
 
-    expect(screen.getByText('복사 실패').parentElement).not.toHaveClass(
-      'invisible',
-    );
     expect(screen.getByText('복사 실패')).toHaveClass('hidden', 'md:inline');
+    expect(screen.queryByText('공유')).not.toBeInTheDocument();
   });
 });
