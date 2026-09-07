@@ -80,7 +80,7 @@ const components: Components = {
     </ol>
   ),
   li: ({ children }) => (
-    <li className="break-keep md:text-lg">{children}</li>
+    <li className="text-sm break-keep md:text-lg">{children}</li>
   ),
   blockquote: ({ children }) => (
     <blockquote className="mt-4 border-l-4 border-indigo/40 pl-4 text-on-cream/80 md:mt-6 md:pl-6 md:text-lg">

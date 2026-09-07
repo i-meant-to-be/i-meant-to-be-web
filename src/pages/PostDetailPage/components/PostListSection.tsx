@@ -41,7 +41,7 @@ export default function PostListSection({
             to={`${routes.POST}/${post.id}`}
             className="group flex flex-row items-baseline justify-between gap-4 px-2 py-2"
           >
-            <span className="min-w-0 line-clamp-2 break-keep text-sm md:text-base">
+            <span className="min-w-0 line-clamp-1 break-keep text-sm md:line-clamp-2 md:text-base">
               {post.meta.title}
             </span>
             <span className="hidden shrink-0 text-sm text-on-cream/60 md:inline md:text-base">

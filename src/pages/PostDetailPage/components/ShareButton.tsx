@@ -52,15 +52,15 @@ export default function ShareButton() {
         <span className="grid">
           <span className={statusLayerClassName('idle')}>
             <IoShareSocialSharp className="h-full" aria-hidden="true" />
-            공유
+            <span className="hidden md:inline">공유</span>
           </span>
           <span className={statusLayerClassName('copied')}>
             <IoCheckmarkSharp className="h-full" aria-hidden="true" />
-            복사됨
+            <span className="hidden md:inline">복사됨</span>
           </span>
           <span className={statusLayerClassName('failed')}>
             <IoCloseSharp className="h-full" aria-hidden="true" />
-            복사 실패
+            <span className="hidden md:inline">복사 실패</span>
           </span>
         </span>
       </BorderButton>

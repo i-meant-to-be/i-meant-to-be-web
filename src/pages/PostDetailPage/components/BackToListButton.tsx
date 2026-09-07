@@ -10,10 +10,14 @@ interface BackToListButtonProps {
 
 export default function BackToListButton({ className }: BackToListButtonProps) {
   return (
-    <Link to={routes.POST} className={clsx(className)}>
+    <Link
+      to={routes.POST}
+      aria-label="게시글 목록으로 돌아가기"
+      className={clsx(className)}
+    >
       <BorderButton color="on-cream">
-        <IoListSharp />
-        목록
+        <IoListSharp aria-hidden="true" />
+        <span className="hidden md:inline">목록</span>
       </BorderButton>
     </Link>
   );
