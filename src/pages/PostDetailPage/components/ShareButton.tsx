@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 import {
   IoCheckmarkSharp,
   IoCloseSharp,
@@ -9,9 +8,8 @@ import BorderButton from '../../../components/BorderButton';
 
 const RESET_DELAY_MS = 2000;
 
-/** 세 상태 레이어를 같은 칸에 겹쳐 두고 보이는 하나만 남긴다 — 버튼 폭이 흔들리지 않는다. */
-const STATUS_LAYER =
-  'col-start-1 row-start-1 flex flex-row items-center justify-center gap-2';
+const STATUS_CONTENT_CLASS_NAME =
+  'flex flex-row items-center justify-center gap-2';
 
 type Status = 'idle' | 'copied' | 'failed';
 
@@ -39,9 +37,6 @@ export default function ShareButton() {
     );
   };
 
-  const statusLayerClassName = (layer: Status) =>
-    clsx(STATUS_LAYER, status !== layer && 'invisible');
-
   return (
     <button
       type="button"
@@ -49,20 +44,24 @@ export default function ShareButton() {
       aria-label="게시글 링크 복사"
     >
       <BorderButton color="on-cream">
-        <span className="grid">
-          <span className={statusLayerClassName('idle')}>
+        {status === 'idle' && (
+          <span className={STATUS_CONTENT_CLASS_NAME}>
             <IoShareSocialSharp className="h-full" aria-hidden="true" />
             <span className="hidden md:inline">공유</span>
           </span>
-          <span className={statusLayerClassName('copied')}>
+        )}
+        {status === 'copied' && (
+          <span className={STATUS_CONTENT_CLASS_NAME}>
             <IoCheckmarkSharp className="h-full" aria-hidden="true" />
             <span className="hidden md:inline">복사됨</span>
           </span>
-          <span className={statusLayerClassName('failed')}>
+        )}
+        {status === 'failed' && (
+          <span className={STATUS_CONTENT_CLASS_NAME}>
             <IoCloseSharp className="h-full" aria-hidden="true" />
             <span className="hidden md:inline">복사 실패</span>
           </span>
-        </span>
+        )}
       </BorderButton>
     </button>
   );
