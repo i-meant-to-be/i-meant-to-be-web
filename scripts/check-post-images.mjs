@@ -9,6 +9,8 @@ const publicDir = path.join(rootDir, 'public');
 const MARKDOWN_IMAGE = /!\[[^\]]*\]\(([^)]+)\)/g;
 const HTML_IMAGE = /<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/gi;
 const FENCE = /^(`{3,}|~{3,})/;
+const POST_ID = /^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const IMAGE_FILENAME = /^[a-z0-9]+(?:-[a-z0-9]+)*\.[a-z0-9]+$/;
 
 /** `(url "title")` 형태에서 url만, 감싸는 <> 제거 */
 function cleanUrl(raw) {
@@ -50,12 +52,33 @@ export function collectRefs(body) {
 export function checkRef(url) {
   if (url.startsWith('data:')) return null;
   if (/^https?:\/\//i.test(url) || url.startsWith('//')) {
-    return '외부 이미지 핫링크 금지 (posts.md §4-4) — 내려받아 public/posts/<id>/ 에 저장';
+    return '외부 이미지 핫링크 금지 (posts.md §4-4) — 내려받아 public/post/<id>/ 에 저장';
   }
   if (!url.startsWith('/')) {
-    return '상대경로는 런타임에 해석되지 않음 (posts.md §4-3) — /posts/... 절대경로를 쓸 것';
+    return '상대경로는 런타임에 해석되지 않음 (posts.md §4-3) — /post/<id>/... 절대경로를 쓸 것';
   }
-  const filePath = path.join(publicDir, decodeURIComponent(url.split(/[?#]/)[0]));
+
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent(url.split(/[?#]/)[0]);
+  } catch {
+    return '이미지 경로의 URL 인코딩이 올바르지 않음';
+  }
+
+  const segments = decodedPath.split('/');
+  if (segments.length !== 4 || segments[0] !== '' || segments[1] !== 'post') {
+    return '게시물 이미지 경로는 /post/<id>/<파일명> 구조여야 함 (posts.md §4-3)';
+  }
+
+  const [, , postId, filename] = segments;
+  if (!POST_ID.test(postId)) {
+    return '게시물 이미지 경로의 id는 4자리 순번과 소문자 kebab-case 영문이어야 함 (posts.md §1)';
+  }
+  if (!IMAGE_FILENAME.test(filename)) {
+    return '게시물 이미지 파일명은 확장자를 포함한 소문자 kebab-case 영문이어야 함 (posts.md §4-2)';
+  }
+
+  const filePath = path.join(publicDir, 'post', postId, filename);
   if (!existsSync(filePath)) {
     return `public${url} 파일이 존재하지 않음`;
   }
