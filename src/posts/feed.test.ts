@@ -33,7 +33,7 @@ const answer = 42;
 
 [내부 링크](/post/0001-first)
 
-![게시물 이미지](/posts/0002-second/image.png)
+![게시물 이미지](/post/0002-second/image.png)
 
 <script>alert('실행 금지')</script>`,
   },
@@ -106,7 +106,7 @@ describe('buildRssXml', () => {
     expect(xml).toContain('<code class="language-ts">');
     expect(xml).toContain('href="https://imeantto.be/post/0001-first"');
     expect(xml).toContain(
-      'src="https://imeantto.be/posts/0002-second/image.png"',
+      'src="https://imeantto.be/post/0002-second/image.png"',
     );
     expect(xml).toContain('&lt;script&gt;alert');
     expect(xml).not.toContain('<script>alert');
@@ -118,12 +118,12 @@ describe('buildRssXml', () => {
 describe('RSS serialization', () => {
   it('keeps external URLs and converts root-relative URLs', () => {
     const html = renderRssContent(
-      '[내부](/post) [외부](https://example.com) ![이미지](/posts/image.png)',
+      '[내부](/post) [외부](https://example.com) ![이미지](/post/image.png)',
     );
 
     expect(html).toContain('href="https://imeantto.be/post"');
     expect(html).toContain('href="https://example.com"');
-    expect(html).toContain('src="https://imeantto.be/posts/image.png"');
+    expect(html).toContain('src="https://imeantto.be/post/image.png"');
   });
 
   it('splits CDATA terminators safely', () => {

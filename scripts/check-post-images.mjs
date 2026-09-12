@@ -50,10 +50,13 @@ export function collectRefs(body) {
 export function checkRef(url) {
   if (url.startsWith('data:')) return null;
   if (/^https?:\/\//i.test(url) || url.startsWith('//')) {
-    return '외부 이미지 핫링크 금지 (posts.md §4-4) — 내려받아 public/posts/<id>/ 에 저장';
+    return '외부 이미지 핫링크 금지 (posts.md §4-4) — 내려받아 public/post/<id>/ 에 저장';
   }
   if (!url.startsWith('/')) {
-    return '상대경로는 런타임에 해석되지 않음 (posts.md §4-3) — /posts/... 절대경로를 쓸 것';
+    return '상대경로는 런타임에 해석되지 않음 (posts.md §4-3) — /post/<id>/... 절대경로를 쓸 것';
+  }
+  if (!url.startsWith('/post/')) {
+    return '게시물 이미지 경로는 상세 페이지와 같은 /post/<id>/ 아래에 둘 것 (posts.md §4-3)';
   }
   const filePath = path.join(publicDir, decodeURIComponent(url.split(/[?#]/)[0]));
   if (!existsSync(filePath)) {

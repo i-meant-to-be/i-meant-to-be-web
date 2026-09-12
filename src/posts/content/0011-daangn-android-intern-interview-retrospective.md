@@ -6,7 +6,7 @@ category: 개발
 tags: [Android, 면접, 당근, AI]
 ---
 
-![당근 Android 인턴 면접 불합격 안내 메일](/posts/0011-daangn-android-intern-interview-retrospective/daangn.png)
+![당근 Android 인턴 면접 불합격 안내 메일](/post/0011-daangn-android-intern-interview-retrospective/daangn.png)
 
 ## 서론
 
