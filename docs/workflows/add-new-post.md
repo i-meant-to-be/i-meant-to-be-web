@@ -57,8 +57,8 @@
   (`posts.md` §4-4).
 - 대상 파일명 (`posts.md` §4-2): 원본 basename이 소문자 kebab ASCII면 그대로, 아니면 `alt`에서
   kebab 생성, 그것도 안 되면 `image-1`, `image-2` …. 확장자는 원본 유지.
-- `public/posts/<id>/<대상 파일명>`으로 복사.
-- 본문 참조를 `![<alt>](/posts/<id>/<대상 파일명>)` 형식으로 교체 (`<img>`도 변환). `alt`가
+- `public/post/<id>/<대상 파일명>`으로 복사.
+- 본문 참조를 `![<alt>](/post/<id>/<대상 파일명>)` 형식으로 교체 (`<img>`도 변환). `alt`가
   비면 사용자에게 확인 후 채움.
 - 300KB 초과 이미지는 사용자에게 알림 (`posts.md` §4-5).
 
