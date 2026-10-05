@@ -1,6 +1,6 @@
 ---
 title: Android 컴파일 과정과 Baseline Profile을 통한 성능 개선
-description: 왜 Kotlin/Java로 코드 작성하는데 JVM은 안 쓰죠?
+description: Kotlin/Java로 코드 치면서 JVM은 안 쓰는 이유
 date: 2026-10-06
 category: 개발
 tags: [Android, 컴파일러, ART, BaselineProfile, R8]
