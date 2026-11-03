@@ -25,7 +25,7 @@ describe('PostDetailPage', () => {
     const title = screen.getByRole('heading', {
       name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
     });
-    expect(title).toHaveClass('tracking-[-0.05em]', 'leading-[1.05]');
+    expect(title).toHaveClass('tracking-tighter', 'leading-normal');
     expect(screen.getByText('개발')).toBeInTheDocument();
     expect(screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/)).toBeInTheDocument();
   });
