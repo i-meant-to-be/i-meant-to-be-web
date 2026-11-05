@@ -26,6 +26,20 @@ describe('resolveSeoData', () => {
 });
 
 describe('renderHeadHtml', () => {
+  it('renders profile metadata as a valid noindex page', () => {
+    const html = renderHeadHtml('/profile');
+
+    expect(html).toContain('<title>프로필 | imeanttobe</title>');
+    expect(html).toContain(
+      '경력과 프로젝트, 사용 기술 및 관련 활동을 소개하는 페이지.',
+    );
+    expect(html).toContain('content="noindex, follow"');
+    expect(html).toContain(
+      'rel="canonical" href="https://imeantto.be/profile"',
+    );
+    expect(html).toContain('"@type":"WebPage"');
+  });
+
   it('emits article metadata and JSON-LD for a post', () => {
     const post = getAllPosts()[0];
     const html = renderHeadHtml(`/post/${post.id}`);

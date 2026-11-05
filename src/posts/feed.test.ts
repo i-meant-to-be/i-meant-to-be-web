@@ -54,6 +54,7 @@ describe('getPrerenderPaths', () => {
   it('includes every static route and every post', () => {
     expect(getPrerenderPaths(posts)).toEqual([
       '/',
+      '/profile',
       '/post',
       '/music',
       '/post/0002-second',
@@ -63,6 +64,11 @@ describe('getPrerenderPaths', () => {
 });
 
 describe('buildSitemapXml', () => {
+  it('excludes the profile scaffold while retaining its prerendered route', () => {
+    expect(getPrerenderPaths(posts)).toContain('/profile');
+    expect(buildSitemapXml(posts)).not.toContain('https://imeantto.be/profile');
+  });
+
   it('uses precise lastmod values and omits unsupported static dates', () => {
     const xml = buildSitemapXml(posts);
 

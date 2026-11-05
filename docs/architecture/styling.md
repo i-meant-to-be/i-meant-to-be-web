@@ -35,6 +35,8 @@ Tailwind CSS 4 컬러 토큰과 클래스 작성 규칙.
 - 유틸리티 클래스는 인라인으로 씀. 별도 CSS 파일이나 `@apply`로 추출하지 않음 (예외: §5).
 - `p { white-space: pre-wrap; }` 같은 전역 base 스타일은 `src/index.css`의 `@layer base`
   에서만 관리함.
+- 본문은 `word-break: keep-all`로 한국어 단어 단위 줄바꿈을 적용함. 폭보다 긴 URL·식별자는
+  `overflow-wrap: anywhere`로 넘침을 방지함.
 - 조건부 분기가 복잡한 `clsx`나 지나치게 긴 클래스 목록은 이름 있는 상수로 분리하고 JSX에는
   이름만 남김. 기준은 JSX 한 줄에서 무엇을 그리는 요소인지 바로 보이는가임 — 클래스가 길어
   태그와 자식이 묻히거나 삼항이 둘 이상 겹치면 분리함.

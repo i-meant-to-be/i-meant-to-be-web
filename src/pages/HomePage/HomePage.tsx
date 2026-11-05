@@ -1,7 +1,7 @@
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import routes from '../../routes/route';
-import TextButton from './components/TextButton';
+import FilledTextButton from '../../components/FilledTextButton';
 
 type ContentItem = string | { text: string; url: string };
 
@@ -24,7 +24,11 @@ export default function HomePage() {
         {contents.map((content, index) => {
           if (typeof content === 'string') return content;
           return (
-            <TextButton key={index} text={content.text} url={content.url} />
+            <FilledTextButton
+              key={index}
+              text={content.text}
+              url={content.url}
+            />
           );
         })}
       </p>

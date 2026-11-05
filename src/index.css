@@ -18,6 +18,8 @@
   body {
     background-color: theme(colors.cream);
     color: theme(colors.on-cream);
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
 
   p {

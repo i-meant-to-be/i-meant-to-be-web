@@ -16,6 +16,11 @@ const seo: Record<string, RouteSeo> = {
     title: '게시글',
     description: '내가 공부하고 만든 것들에 대한 기록들.',
   },
+  [routes.PROFILE]: {
+    title: '프로필',
+    description: '경력과 프로젝트, 사용 기술 및 관련 활동을 소개하는 페이지.',
+    noindex: true,
+  },
   [routes.MUSIC]: {
     title: '음악',
     description: '내가 좋아하는 음악을 모아둔 곳.',

@@ -1,5 +1,6 @@
 import type { RouteObject } from 'react-router-dom';
 import HomePage from '../pages/HomePage/HomePage';
+import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import PostPage from '../pages/PostPage/PostPage';
 import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
 import MusicPage from '../pages/MusicPage/MusicPage';
@@ -18,6 +19,10 @@ const routeObjects: RouteObject[] = [
       {
         path: routes.ROOT,
         element: <HomePage />,
+      },
+      {
+        path: routes.PROFILE,
+        element: <ProfilePage />,
       },
       {
         path: routes.POST,

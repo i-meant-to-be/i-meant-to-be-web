@@ -1,7 +1,8 @@
 import {
+  IoHomeSharp,
+  IoIdCardSharp,
   IoMusicalNotesSharp,
   IoPencilSharp,
-  IoPersonSharp,
 } from 'react-icons/io5';
 import type { PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -29,10 +30,14 @@ export default function Header() {
   return (
     <div className="flex flex-row justify-between mb-32">
       <HeaderLink label="홈" to={routes.ROOT}>
-        <IoPersonSharp aria-hidden="true" className="size-full" />
+        <IoHomeSharp aria-hidden="true" className="size-full" />
       </HeaderLink>
 
       <section className="flex flex-row space-x-4">
+        <HeaderLink label="프로필" to={routes.PROFILE}>
+          <IoIdCardSharp aria-hidden="true" className="size-full" />
+        </HeaderLink>
+
         <HeaderLink label="게시글" to={routes.POST}>
           <IoPencilSharp aria-hidden="true" className="size-full" />
         </HeaderLink>
