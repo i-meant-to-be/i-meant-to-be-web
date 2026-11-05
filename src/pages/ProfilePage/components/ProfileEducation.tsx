@@ -12,14 +12,9 @@ interface Activity {
 
 const schools: School[] = [
   {
-    name: '중앙대학교 서울캠퍼스 창의ICT공과대학 소프트웨어학부',
-    qualification: '졸업 · 주 전공',
+    name: '중앙대학교 소프트웨어학부 · 철학과',
+    qualification: '졸업 · 소프트웨어학 주전공 / 철학 복수전공',
     period: '2018년 3월 - 2026년 8월',
-  },
-  {
-    name: '중앙대학교 서울캠퍼스 인문대학 철학과',
-    qualification: '졸업 · 복수전공',
-    period: '2022년 9월 - 2026년 8월',
   },
   {
     name: '춘천고등학교',
@@ -38,6 +33,11 @@ const activities: Activity[] = [
     name: '과학기술정보통신부 AI/SW마에스트로 제13기',
     period: '2022년 6월 - 2022년 12월',
     descriptions: ['Flutter 개발자로 참여'],
+  },
+  {
+    name: '중앙대학교 자유토론동아리 비꼼',
+    period: '2018년 - 2026년',
+    descriptions: ['2022년 회장', '2023년 2학기 회장'],
   },
 ];
 
