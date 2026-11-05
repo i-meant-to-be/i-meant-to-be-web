@@ -10,7 +10,7 @@ import routes from '../routes/route';
 import seo from '../routes/seo';
 import type { PostWithId } from './index';
 
-const STATIC_PATHS = [routes.ROOT, routes.POST, routes.MUSIC];
+const STATIC_PATHS = [routes.ROOT, routes.PROFILE, routes.POST, routes.MUSIC];
 const RSS_MAX_BYTES = 10 * 1024 * 1024;
 
 function postPath(post: PostWithId): string {
