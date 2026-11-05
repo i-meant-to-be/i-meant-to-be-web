@@ -24,7 +24,9 @@ src/
 │   ├── BorderButton.tsx
 │   ├── TextButton.tsx             # 배경 없는 인라인 외부 링크
 │   ├── FilledTextButton.tsx       # 문단 안의 배경 강조 링크
+│   ├── Callout.tsx                # 색상 배경으로 자식 콘텐츠 강조
 │   ├── TagList.tsx                # 상위 분류 배지 + 태그 pill
+│   ├── Tag.tsx                    # 네 가지 색상을 지원하는 태그
 │   ├── Seo.tsx
 │   ├── seoTags.ts
 │   └── jsonLd.ts
