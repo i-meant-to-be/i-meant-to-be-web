@@ -6,6 +6,7 @@ import Header from './Header';
 
 const cases = [
   { label: '홈', path: routes.ROOT },
+  { label: '프로필', path: routes.PROFILE },
   { label: '게시글', path: routes.POST },
   { label: '음악', path: routes.MUSIC },
 ];
@@ -23,6 +24,9 @@ describe('Header', () => {
     );
 
     expect(links).toHaveLength(cases.length);
+    expect(
+      links.map((link) => link.match(/aria-label="([^"]+)"/)?.[1]),
+    ).toEqual(cases.map((item) => item.label));
     expect(selectedLink).toContain('aria-current="page"');
     expect(
       links.filter((link) => link.includes('aria-current="page"')),
