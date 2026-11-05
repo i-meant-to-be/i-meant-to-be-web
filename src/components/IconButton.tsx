@@ -16,11 +16,7 @@ export default function IconButton(props: IconButtonProps) {
   const { label, url, icon: Icon, size = 32, className } = props;
 
   if (!url) {
-    return (
-      <span aria-label={label}>
-        <Icon size={size} className={className} aria-hidden="true" />
-      </span>
-    );
+    return null;
   }
 
   return (

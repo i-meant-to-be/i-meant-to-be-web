@@ -10,7 +10,7 @@ export default function ProfilePage() {
   return (
     <Layout>
       <Seo path={routes.PROFILE} />
-      <main className="flex min-w-0 flex-col gap-12 select-text wrap-break-word text-sm leading-relaxed md:gap-16 md:text-base">
+      <main className="flex min-w-0 flex-col gap-12 select-text text-sm leading-relaxed md:gap-16 md:text-base">
         <ProfileIntro />
         <ProfileExperiences />
         <ProfileSkills />
