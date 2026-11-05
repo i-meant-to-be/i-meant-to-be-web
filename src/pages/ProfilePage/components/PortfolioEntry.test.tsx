@@ -1,5 +1,4 @@
 import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import PortfolioEntry from './PortfolioEntry';
 
@@ -10,9 +9,37 @@ describe('PortfolioEntry', () => {
     period: '개발 기간',
     team: '개인',
     context: '프로젝트 설명',
-    role: '개발',
+    summary: '프로젝트 요약',
     contributions: [],
   };
+
+  it('renders contribution Markdown as semantic paragraphs, code, emphasis and links', () => {
+    render(
+      <PortfolioEntry
+        {...entry}
+        contributions={[
+          {
+            title: 'Markdown 기여',
+            description:
+              '**성과**와 `Dispatchers.IO`\n\n[검증 자료](https://example.com)\n\n```kotlin\nval count = 10\n```',
+          },
+        ]}
+      />,
+    );
+    const contribution = within(
+      screen.getByRole('region', { name: 'Markdown 기여' }),
+    );
+    expect(contribution.getByText('성과').tagName).toBe('STRONG');
+    expect(contribution.getByText('Dispatchers.IO').tagName).toBe('CODE');
+    expect(contribution.getByRole('link', { name: '검증 자료' })).toHaveAttribute(
+      'href',
+      'https://example.com',
+    );
+    expect(contribution.getByText('val count = 10').closest('pre')).not.toBeNull();
+    expect(contribution.getByText('성과').closest('p')).not.toContainElement(
+      contribution.getByRole('link'),
+    );
+  });
 
   it('renders only configured project links in the fixed category order', () => {
     const { rerender } = render(
@@ -53,55 +80,37 @@ describe('PortfolioEntry', () => {
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
   });
 
-  it('expands and collapses stacks independently for each entry', async () => {
-    const user = userEvent.setup();
+  it('shows at most three major stacks without an expand button', () => {
     render(
-      <>
-        <PortfolioEntry
-          {...entry}
-          technologies={['Kotlin', 'Compose', 'KMP', 'Gradle']}
-        />
-        <PortfolioEntry
-          {...entry}
-          id="second"
-          title="다른 프로젝트"
-          technologies={['React', 'TypeScript', 'Vite', 'Vitest']}
-        />
-      </>,
+      <PortfolioEntry
+        {...entry}
+        technologies={['KMP', 'KSP', 'NDK', 'Gradle']}
+      />,
     );
-
-    const first = within(screen.getByRole('article', { name: '프로젝트' }));
-    const second = within(
-      screen.getByRole('article', { name: '다른 프로젝트' }),
-    );
-    const toggle = first.getByRole('button', { name: '↓ 더 보기' });
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    expect(toggle).toHaveAttribute('aria-controls', 'example-stack');
-    expect(first.getAllByRole('listitem')).toHaveLength(3);
-    expect(first.queryByText('Gradle')).not.toBeInTheDocument();
-
-    await user.click(toggle);
-    expect(first.getByText('Gradle')).toBeInTheDocument();
-    expect(first.getByRole('button', { name: '↑ 접기' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
-    );
-    expect(second.queryByText('Vitest')).not.toBeInTheDocument();
-
-    await user.keyboard('{Enter}');
-    expect(first.queryByText('Gradle')).not.toBeInTheDocument();
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('주요 스택')).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('listitem').map((item) => item.textContent),
+    ).toEqual(['KMP', 'KSP', 'NDK']);
+    expect(screen.queryByText('Gradle')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.queryByText('역할')).not.toBeInTheDocument();
   });
 
   it.each([
-    { technologies: [] },
-    { technologies: ['Kotlin'] },
-    { technologies: ['Kotlin', 'Compose', 'KMP'] },
+    [0, 'indigo'],
+    [1, 'rose'],
+    [2, 'amber'],
+    [3, 'teal'],
+    [4, 'indigo'],
   ])(
-    'does not show a toggle for a stack of at most three items: $technologies',
-    ({ technologies }) => {
-      render(<PortfolioEntry {...entry} technologies={technologies} />);
-      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    'uses %s project index to select %s callout color',
+    (projectIndex, color) => {
+      render(
+        <PortfolioEntry {...entry} projectIndex={projectIndex as number} />,
+      );
+      expect(screen.getByText('프로젝트 요약').closest('.p-4')).toHaveClass(
+        'bg-' + color + '/(--callout-background-opacity)',
+      );
     },
   );
 
@@ -119,69 +128,50 @@ describe('PortfolioEntry', () => {
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 
-  it('renders independent career and project content using the same component', () => {
+  it('shows one project callout at the top of the right column and keeps evidence with its contribution', () => {
     render(
-      <>
-        <PortfolioEntry
-          id="career"
-          title="직장 예시"
-          period="재직 기간"
-          team="소속 팀"
-          technologies={['Kotlin', 'Jetpack Compose']}
-          achievements={['팀 프로젝트 성과']}
-          context="서비스 맥락"
-          role="담당 기능"
-          contributions={[
-            {
-              title: '직장 기여',
-              problem: '재현한 오류',
-              action: '원인을 분석하고 수정',
-              result: '오류 재현되지 않음',
-              verification: '회귀 테스트',
-            },
-          ]}
-          evidenceLinks={[
-            { label: '구현 PR', url: 'https://example.com/pull/1' },
-          ]}
-        />
-        <PortfolioEntry
-          id="project"
-          title="프로젝트 예시"
-          period="개발 기간"
-          team="개인"
-          context="학습 과제"
-          role="기능 구현"
-          contributions={[
-            {
-              title: '프로젝트 기여',
-              problem: '실험할 동작',
-              action: '원리를 적용',
-              result: '로컬 동작 확인',
-            },
-          ]}
-          evidenceLinks={[]}
-        />
-      </>,
+      <PortfolioEntry
+        {...entry}
+        contributions={[
+          {
+            title: '첫 번째 기여',
+            description: '첫 번째 설명',
+            evidenceLinks: [
+              { title: '구현 PR', url: 'https://example.com/pull/1' },
+              { title: '설계 문서', url: 'https://example.com/docs' },
+            ],
+          },
+          { title: '두 번째 기여', description: '두 번째 설명' },
+          {
+            title: '세 번째 기여',
+            description: '세 번째 설명',
+            evidenceLinks: [],
+          },
+        ]}
+      />,
     );
 
-    const career = within(screen.getByRole('article', { name: '직장 예시' }));
-    const project = within(
-      screen.getByRole('article', { name: '프로젝트 예시' }),
-    );
-    expect(career.getByText('회귀 테스트')).toBeInTheDocument();
-    expect(career.getByText('Kotlin').tagName).toBe('LI');
-    expect(career.getByText('Jetpack Compose').tagName).toBe('LI');
-    expect(career.getByText('팀 프로젝트 성과')).toBeInTheDocument();
-    expect(career.getByRole('link', { name: '구현 PR' })).toHaveAttribute(
+    const article = screen.getByRole('article', { name: '프로젝트' });
+    const callout = screen.getByText('프로젝트 요약').closest('.p-4');
+    expect(screen.getAllByText('프로젝트 요약')).toHaveLength(1);
+    expect(article.lastElementChild?.firstElementChild).toBe(callout);
+    const first = within(screen.getByRole('region', { name: '첫 번째 기여' }));
+    expect(first.getByRole('heading')).toHaveClass('font-bold');
+    expect(first.getByText('첫 번째 설명')).toBeInTheDocument();
+    expect(first.getByRole('link', { name: '구현 PR' })).toHaveAttribute(
       'href',
       'https://example.com/pull/1',
     );
-    expect(project.getByText('로컬 동작 확인')).toBeInTheDocument();
-    expect(project.queryByText('직장 기여')).not.toBeInTheDocument();
-    expect(project.queryByText('검증 조건')).not.toBeInTheDocument();
-    expect(project.queryByText('진행 상태')).not.toBeInTheDocument();
-    expect(project.queryByText('프로젝트 성과')).not.toBeInTheDocument();
-    expect(project.queryByRole('navigation')).not.toBeInTheDocument();
+    expect(first.getByRole('link', { name: '설계 문서' })).toHaveAttribute(
+      'href',
+      'https://example.com/docs',
+    );
+    expect(first.queryByText('근거')).not.toBeInTheDocument();
+    for (const title of ['두 번째 기여', '세 번째 기여']) {
+      const contribution = within(screen.getByRole('region', { name: title }));
+      expect(contribution.queryByRole('link')).not.toBeInTheDocument();
+      expect(contribution.queryByText('근거')).not.toBeInTheDocument();
+    }
     const ids = Array.from(document.querySelectorAll('[id]'), (el) => el.id);
     expect(new Set(ids).size).toBe(ids.length);
   });

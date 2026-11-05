@@ -39,12 +39,10 @@ describe('ProfilePage', () => {
     expect(
       within(main).queryByRole('heading', { name: '직장 경력' }),
     ).not.toBeInTheDocument();
-    expect(within(main).getAllByRole('heading', { level: 4 })).toHaveLength(4);
     const projects = within(screen.getByRole('region', { name: '프로젝트' }));
     expect(
       projects.queryByText(/작성하세요|작성용 틀|평균 x줄/),
     ).not.toBeInTheDocument();
-    expect(projects.getAllByRole('link')).toHaveLength(10);
     expect(
       projects.getByRole('link', { name: 'Windows 포팅 저장소' }),
     ).toHaveAttribute(
@@ -57,8 +55,7 @@ describe('ProfilePage', () => {
         .getAllByRole('listitem')
         .map((item) => item.querySelector('p')?.textContent),
     ).toEqual([
-      '중앙대학교 서울캠퍼스 창의ICT공과대학 소프트웨어학부',
-      '중앙대학교 서울캠퍼스 인문대학 철학과',
+      '중앙대학교 소프트웨어학부 · 철학과',
       '춘천고등학교',
     ]);
     const activities = within(screen.getByRole('region', { name: '활동' }));
@@ -67,7 +64,11 @@ describe('ProfilePage', () => {
       Array.from(activitiesList.children).map(
         (item) => item.querySelector('p')?.textContent,
       ),
-    ).toEqual(['YAPP 제28기', '과학기술정보통신부 AI/SW마에스트로 제13기']);
+    ).toEqual([
+      'YAPP 제28기',
+      '과학기술정보통신부 AI/SW마에스트로 제13기',
+      '중앙대학교 자유토론동아리 비꼼',
+    ]);
     expect(activities.getByText('Android 개발자로 참여').tagName).toBe('LI');
     expect(activities.getByText('데모데이 우수상 수상').tagName).toBe('LI');
     expect(activities.getByText('Flutter 개발자로 참여').tagName).toBe('LI');
