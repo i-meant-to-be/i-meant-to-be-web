@@ -142,4 +142,4 @@ head가 어긋날 수 없음. 동적 라우트는 `seo.ts`에 key를 추가하�
   발견하지 못함. 외부 링크는 `<a href target="_blank" rel="noreferrer noopener">`를 기본으로
   하고, 버튼 UI가 필요할 때만 `window.open`을 씀.
 - 문장 안에 흐르는 링크에 블록 레벨 요소를 쓰지 않음. 크롤러가 그 경계마다 문장을 끊어 검색
-  스니펫이 깨짐 (`src/pages/HomePage/components/TextButton.tsx`).
+  스니펫이 깨짐 (`src/components/TextButton.tsx`).

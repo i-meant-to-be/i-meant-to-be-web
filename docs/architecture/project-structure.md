@@ -19,17 +19,26 @@ src/
 │   ├── Layout.tsx                 # Header + children + Footer 조립
 │   ├── Header.tsx
 │   ├── HeaderButton.tsx
+│   ├── IconButton.tsx             # 외부 링크용 아이콘 버튼
 │   ├── Footer.tsx
 │   ├── BorderButton.tsx
+│   ├── TextButton.tsx             # 배경 없는 인라인 외부 링크
+│   ├── FilledTextButton.tsx       # 문단 안의 배경 강조 링크
 │   ├── TagList.tsx                # 상위 분류 배지 + 태그 pill
 │   ├── Seo.tsx
 │   ├── seoTags.ts
 │   └── jsonLd.ts
 ├── pages/                        # 라우트 1개 = 페이지 폴더 1개
 │   ├── HomePage/
-│   │   ├── HomePage.tsx
+│   │   └── HomePage.tsx
+│   ├── ProfilePage/
+│   │   ├── ProfilePage.tsx
 │   │   └── components/
-│   │       └── TextButton.tsx
+│   │       ├── ProfileIntro.tsx
+│   │       ├── ProfileExperiences.tsx
+│   │       ├── PortfolioEntry.tsx   # 직장·프로젝트 공통 경험 항목
+│   │       ├── ProfileSkills.tsx
+│   │       └── ProfileEducation.tsx
 │   ├── PostPage/
 │   │   ├── PostPage.tsx
 │   │   └── components/
@@ -84,3 +93,10 @@ src/
   두지 않음.
 - 표의 폴더는 필요할 때 만듦. 없는 폴더가 §2 트리에 보이지 않는 것은 문서 불일치가 아님(§1).
 - `src/posts/`, `src/routes/`처럼 이미 자기 폴더를 가진 도메인 코드는 이 표의 대상이 아님.
+
+## 4. 프로필 프로젝트 로고
+
+- 이미지 파일은 `public/profile/logos/`에 배치함.
+- `ProfileExperiences.tsx`의 `PortfolioEntry`에 `logoSrc="/profile/logos/hilit.png"`처럼 지정함.
+- `logoSrc`는 선택 사항이며 생략하면 로고 영역을 렌더하지 않음. 대체 텍스트는 기본적으로
+  프로젝트명 뒤에 `로고`를 붙이며, `logoAlt`로 변경할 수 있음.
