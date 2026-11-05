@@ -39,6 +39,9 @@ src/
 │   │       ├── ProfileIntro.tsx
 │   │       ├── ProfileExperiences.tsx
 │   │       ├── PortfolioEntry.tsx   # 직장·프로젝트 공통 경험 항목
+│   │       ├── PortfolioEntryTitle.tsx   # 로고·제목·플랫폼·프로젝트 링크
+│   │       ├── PortfolioEntryInfo.tsx    # 설명·기간·팀 구성·주요 스택
+│   │       ├── PortfolioEntryProject.tsx # 요약·Markdown 기여·근거·성과
 │   │       ├── ProfileSkills.tsx
 │   │       └── ProfileEducation.tsx
 │   ├── PostPage/
