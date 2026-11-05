@@ -17,7 +17,7 @@ export interface PortfolioEntryInfoProps {
 const FIELD_CONTENT_CLASS_NAME = 'min-w-0 md:mt-2';
 const GENERAL_INFO_ITEM_GAP_CLASS_NAME = 'space-y-2 md:space-y-6';
 const GENERAL_INFO_ROW_CLASS_NAME =
-  'grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-2 md:block';
+  'grid grid-cols-[5.5rem_minmax(0,1fr)] items-start gap-x-2 md:block';
 
 export default function PortfolioEntryInfo(props: PortfolioEntryInfoProps) {
   const { id, context, period, team, technologies = [] } = props;
