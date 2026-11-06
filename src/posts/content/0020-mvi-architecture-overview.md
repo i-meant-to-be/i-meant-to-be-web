@@ -1,5 +1,5 @@
 ---
-title: "MVI 아키텍처 개선: MVI 아키텍처에 대해 (1/2)"
+title: "MVI 아키텍처 개선: MVI 아키텍처에 대해 (1/3)"
 description: MVI 아키텍처와 그 기반이 되는 MVVM 아키텍처에 관해
 date: 2026-11-03
 category: 개발
