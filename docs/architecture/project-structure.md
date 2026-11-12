@@ -68,11 +68,13 @@ src/
 │   ├── extractHeadings.ts         # 목차용 제목 추출
 │   ├── formatDate.ts
 │   ├── feed.ts
-│   └── index.ts                   # 전체 로드, getAllPosts/getPostById
+│   ├── loader.ts                  # 상세 라우트의 비동기 본문 로더
+│   └── index.ts                   # 메타데이터 조회 + 비동기 본문 로드
 ├── routes/
 │   ├── ScrollToTop.tsx            # 경로 변경 시 스크롤 위치 초기화
 │   ├── route.ts
 │   ├── routes.tsx
+│   ├── RouteError.tsx            # 라우트 로드 실패와 새로고침 안내
 │   ├── router.tsx
 │   └── seo.ts
 ├── site.ts                       # 사이트 URL/이름/저자 상수

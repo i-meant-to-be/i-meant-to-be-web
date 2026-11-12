@@ -1,15 +1,14 @@
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router';
-import { useRoutes } from 'react-router-dom';
+import {
+  createStaticHandler,
+  createStaticRouter,
+  StaticRouterProvider,
+} from 'react-router-dom';
 import './index.css';
 import routeObjects from './routes/routes';
 import { renderHeadHtml } from './components/seoTags';
-import { getAllPosts } from './posts';
+import { getAllPostSummaries, loadPost } from './posts';
 import { buildRssXml, buildSitemapXml, getPrerenderPaths } from './posts/feed';
-
-function Routes() {
-  return useRoutes(routeObjects);
-}
 
 export interface RenderResult {
   /** `<div id="root">` 안에 들어갈 마크업 */
@@ -24,24 +23,37 @@ export interface RenderResult {
  * `Analytics`(클라이언트 전용)는 여기서 렌더하지 않는다 — `main.tsx`가
  * 하이드레이션 이후 붙인다.
  */
-export function render(url: string): RenderResult {
-  const html = renderToString(
-    <StaticRouter location={url}>
-      <Routes />
-    </StaticRouter>,
+export async function render(url: string): Promise<RenderResult> {
+  const handler = createStaticHandler(routeObjects);
+  const context = await handler.query(
+    new Request(new URL(url, 'https://imeantto.be')),
   );
-
+  if (context instanceof Response)
+    throw new Error(`Unexpected response: ${context.status}`);
+  if (context.errors)
+    throw new Error(`Prerender failed: ${JSON.stringify(context.errors)}`);
+  const router = createStaticRouter(handler.dataRoutes, context);
+  const html = renderToString(
+    <StaticRouterProvider router={router} context={context} />,
+  );
   return { html, head: renderHeadHtml(url) };
 }
 
 export function getPaths(): string[] {
-  return getPrerenderPaths(getAllPosts());
+  return getPrerenderPaths(getAllPostSummaries());
 }
 
 export function getSitemapXml(): string {
-  return buildSitemapXml(getAllPosts());
+  return buildSitemapXml(getAllPostSummaries());
 }
 
-export function getRssXml(): string {
-  return buildRssXml(getAllPosts());
+export async function getRssXml(): Promise<string> {
+  const posts = await Promise.all(
+    getAllPostSummaries().map(async ({ id }) => {
+      const post = await loadPost(id);
+      if (!post) throw new Error(`Missing post: ${id}`);
+      return post;
+    }),
+  );
+  return buildRssXml(posts);
 }

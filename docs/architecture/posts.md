@@ -8,8 +8,13 @@
 - 파일명 형식: `{4자리 순번}-{영문 슬러그}.md` (예: `0001-hello-world.md`). 슬러그는 소문자
   kebab-case 영문.
 - 확장자를 뺀 파일명이 그대로 URL id가 됨: `/post/{id}`.
-- `src/posts/index.ts`가 `import.meta.glob('./content/*.md', { query: '?raw', eager: true })`로
-  전체를 문자열로 로드해 `getAllPosts` / `getPostById`를 제공함.
+- `src/posts/index.ts`가 `?post-meta` eager glob으로 메타데이터만 수집하고 `?raw` 동적
+  import로 요청한 게시물 본문만 로드함. `getAllPostSummaries` / `getPostSummaryById`는
+  동기 조회이며 `loadPost`는 비동기 조회임.
+- Vite의 `post-metadata` 플러그인이 기존 `parsePost`로 검증·발췌한 메타데이터를 생성함.
+  개발·테스트·빌드가 같은 경로를 사용하며 별도 메타데이터 파일은 작성하거나 커밋하지 않음.
+- 목록과 SEO는 본문 없는 `PostSummary`를 사용함. 상세 route loader가 해당 본문을 로드하며,
+  전체 본문 로드는 빌드 시 RSS 생성에만 사용함.
 
 ## 2. frontmatter 계약
 
@@ -25,7 +30,7 @@
 | `tags`        | X    | `[태그1, 태그2]`   | 없으면 빈 배열                                    |
 
 `category`는 `tags`와 별개의 축임. 허용값은 `parsePost.ts`의 `CATEGORIES`뿐이고, 누락되거나
-그 외의 값이면 `parsePost`가 예외를 던짐 — eager 로딩 시점이라 빌드·테스트가 실패함. `/post`
+그 외의 값이면 `parsePost`가 예외를 던짐 — 메타데이터 생성 시점이라 빌드·테스트가 실패함. `/post`
 목록의 분류 필터 탭이 이 값을 기준으로 동작함. 같은 값을 `tags`에 중복해 넣지 않음.
 
 `updated`는 본문·구조화 데이터·주요 링크를 실질적으로 수정했을 때만 실제 수정일로 갱신함.

@@ -8,17 +8,17 @@ import remarkGfm from 'remark-gfm';
 import { SITE_LANGUAGE, SITE_NAME, SITE_URL } from '../site';
 import routes from '../routes/route';
 import seo from '../routes/seo';
-import type { PostWithId } from './index';
+import type { PostWithId, PostSummary } from './index';
 
 const STATIC_PATHS = [routes.ROOT, routes.PROFILE, routes.POST, routes.MUSIC];
 const RSS_MAX_BYTES = 10 * 1024 * 1024;
 
-function postPath(post: PostWithId): string {
+function postPath(post: PostSummary): string {
   return `${routes.POST}/${post.id}`;
 }
 
 /** 프리렌더 대상 경로. noindex 라우트도 정적 HTML은 만든다. */
-export function getPrerenderPaths(posts: PostWithId[]): string[] {
+export function getPrerenderPaths(posts: PostSummary[]): string[] {
   return [...STATIC_PATHS, ...posts.map(postPath)];
 }
 
@@ -31,11 +31,11 @@ function escapeXml(value: string): string {
     .replace(/'/g, '&apos;');
 }
 
-function lastModified(post: PostWithId): string {
+function lastModified(post: PostSummary): string {
   return post.meta.updated ?? post.meta.date;
 }
 
-function latestModified(posts: PostWithId[]): string | undefined {
+function latestModified(posts: PostSummary[]): string | undefined {
   return posts.reduce<string | undefined>((latest, post) => {
     const modified = lastModified(post);
     return !latest || modified > latest ? modified : latest;
@@ -89,7 +89,7 @@ export function toRfc822(date: string): string {
   return new Date(`${date}T00:00:00Z`).toUTCString();
 }
 
-export function buildSitemapXml(posts: PostWithId[]): string {
+export function buildSitemapXml(posts: PostSummary[]): string {
   const latest = latestModified(posts);
 
   const staticEntries = STATIC_PATHS.filter((path) => !seo[path]?.noindex).map(

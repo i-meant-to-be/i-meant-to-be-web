@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../../../routes/route';
-import type { PostWithId } from '../../../posts';
+import type { PostSummary } from '../../../posts';
 import { formatDate } from '../../../posts/formatDate';
 import clsx from 'clsx';
 
 const PAGE_SIZE = 5;
 
 interface PostListSectionProps {
-  posts: PostWithId[];
+  posts: PostSummary[];
   className?: string;
 }
 

@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import type { PostWithId } from '../../../posts';
+import type { PostSummary } from '../../../posts';
 import PostListSection from './PostListSection';
 
-const posts: PostWithId[] = [
+const posts: PostSummary[] = [
   {
     id: '0001-test-post',
     meta: {
@@ -14,7 +14,6 @@ const posts: PostWithId[] = [
       category: '개발',
       tags: [],
     },
-    content: '본문',
   },
 ];
 

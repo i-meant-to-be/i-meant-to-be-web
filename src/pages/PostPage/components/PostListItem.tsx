@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import routes from '../../../routes/route';
-import type { PostWithId } from '../../../posts';
+import type { PostSummary } from '../../../posts';
 import { formatDate } from '../../../posts/formatDate';
 import TagList from '../../../components/TagList';
 
 interface PostListItemProps {
-  post: PostWithId;
+  post: PostSummary;
 }
 
 export default function PostListItem({ post }: PostListItemProps) {

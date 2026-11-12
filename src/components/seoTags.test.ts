@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { renderHeadHtml, resolveSeoData } from './seoTags';
-import { getAllPosts } from '../posts';
+import { getAllPostSummaries } from '../posts';
 
 describe('resolveSeoData', () => {
   it('reads a post title and description from its frontmatter', () => {
-    const post = getAllPosts()[0];
+    const post = getAllPostSummaries()[0];
     const data = resolveSeoData(`/post/${post.id}`);
 
     expect(data.title).toBe(post.meta.title);
@@ -41,7 +41,7 @@ describe('renderHeadHtml', () => {
   });
 
   it('emits article metadata and JSON-LD for a post', () => {
-    const post = getAllPosts()[0];
+    const post = getAllPostSummaries()[0];
     const html = renderHeadHtml(`/post/${post.id}`);
 
     expect(html).toContain(`<title>${post.meta.title} | imeanttobe</title>`);

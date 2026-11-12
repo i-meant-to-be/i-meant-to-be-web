@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import PostDetailPage from './PostDetailPage';
+import { loader } from '../../posts/loader';
 import routes from '../../routes/route';
 
 function renderAt(initialPath: string) {
@@ -10,6 +11,7 @@ function renderAt(initialPath: string) {
       {
         path: routes.POST_DETAIL,
         element: <PostDetailPage />,
+        loader,
       },
     ],
     { initialEntries: [initialPath] },
@@ -19,21 +21,23 @@ function renderAt(initialPath: string) {
 }
 
 describe('PostDetailPage', () => {
-  it('renders an existing post', () => {
+  it('renders an existing post', async () => {
     renderAt('/post/0003-efficient-ci-with-github-actions-jetpack-compose');
 
-    const title = screen.getByRole('heading', {
+    const title = await screen.findByRole('heading', {
       name: '효율적인 Android CI 구축 w/ GitHub Actions - Jetpack Compose',
     });
     expect(title).toHaveClass('tracking-tighter', 'leading-normal');
     expect(screen.getByText('개발')).toBeInTheDocument();
-    expect(screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/보통 프로젝트를 위해 GitHub 저장소를 파면/),
+    ).toBeInTheDocument();
   });
 
-  it('renders a table of contents whose links resolve to real heading ids', () => {
+  it('renders a table of contents whose links resolve to real heading ids', async () => {
     renderAt('/post/0003-efficient-ci-with-github-actions-jetpack-compose');
 
-    const tocLink = screen.getByRole('link', { name: '들어가기' });
+    const tocLink = await screen.findByRole('link', { name: '들어가기' });
     const href = tocLink.getAttribute('href');
     expect(href).toMatch(/^#/);
 
@@ -42,11 +46,11 @@ describe('PostDetailPage', () => {
     expect(heading).toHaveTextContent('들어가기');
   });
 
-  it('shows a not-found message for an unknown id', () => {
+  it('shows a not-found message for an unknown id', async () => {
     renderAt('/post/does-not-exist');
 
     expect(
-      screen.getByRole('heading', { name: /찾을 수 없어요/ }),
+      await screen.findByRole('heading', { name: /찾을 수 없어요/ }),
     ).toBeInTheDocument();
   });
 });

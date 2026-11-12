@@ -30,8 +30,8 @@ function write(filePath, contents) {
   writeFileSync(filePath, contents);
 }
 
-function renderPage(routePath) {
-  const { html, head } = render(routePath);
+async function renderPage(routePath) {
+  const { html, head } = await render(routePath);
   return (
     template
       .replace(ROOT_PLACEHOLDER, `<div id="root">${html}</div>`)
@@ -44,15 +44,15 @@ function renderPage(routePath) {
 const paths = getPaths();
 
 for (const routePath of paths) {
-  write(outputPathFor(routePath), renderPage(routePath));
+  write(outputPathFor(routePath), await renderPage(routePath));
 }
 
 // Vercel은 루트의 404.html을 없는 정적 경로의 응답 본문으로 사용하고
 // 상태 코드는 404로 유지한다. 색인·일반 프리렌더 경로에는 포함하지 않는다.
-write(path.join(distDir, '404.html'), renderPage('/404'));
+write(path.join(distDir, '404.html'), await renderPage('/404'));
 
 write(path.join(distDir, 'sitemap.xml'), getSitemapXml());
-write(path.join(distDir, 'rss.xml'), getRssXml());
+write(path.join(distDir, 'rss.xml'), await getRssXml());
 
 console.log(
   `prerendered ${paths.length} pages and 404.html, plus sitemap.xml and rss.xml.`,

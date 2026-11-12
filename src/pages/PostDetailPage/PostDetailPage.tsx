@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+import type { loader } from '../../posts/loader';
+import { useParams, useLoaderData } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import TagList from '../../components/TagList';
 import routes from '../../routes/route';
-import { getAllPosts, getPostById } from '../../posts';
+import { getAllPostSummaries } from '../../posts';
 import { formatDate } from '../../posts/formatDate';
 import { extractHeadings } from '../../posts/extractHeadings';
 import BackToListButton from './components/BackToListButton';
@@ -15,7 +16,7 @@ import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const post = id ? getPostById(id) : undefined;
+  const post = useLoaderData<Awaited<ReturnType<typeof loader>>>();
   const path = `${routes.POST}/${id ?? ''}`;
 
   if (!post) {
@@ -48,7 +49,10 @@ export default function PostDetailPage() {
         <MarkdownContent content={post.content} />
       </article>
 
-      <PostListSection posts={getAllPosts()} className="mb-12 md:mb-16" />
+      <PostListSection
+        posts={getAllPostSummaries()}
+        className="mb-12 md:mb-16"
+      />
 
       <BackToListButton className="self-end" />
     </Layout>
