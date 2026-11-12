@@ -1,12 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
-import HomePage from '../pages/HomePage/HomePage';
-import ProfilePage from '../pages/ProfilePage/ProfilePage';
-import PostPage from '../pages/PostPage/PostPage';
-import PostDetailPage from '../pages/PostDetailPage/PostDetailPage';
-import MusicPage from '../pages/MusicPage/MusicPage';
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 import routes from './route';
 import ScrollToTop from './ScrollToTop';
+import RouteError from './RouteError';
 
 /**
  * 라우트 정의의 단일 소스. 브라우저(`router.tsx`)와 프리렌더
@@ -14,31 +9,61 @@ import ScrollToTop from './ScrollToTop';
  */
 const routeObjects: RouteObject[] = [
   {
+    id: 'root',
     element: <ScrollToTop />,
+    errorElement: <RouteError />,
+    hydrateFallbackElement: <p role="status">불러오는 중…</p>,
     children: [
       {
         path: routes.ROOT,
-        element: <HomePage />,
+        id: 'HomePage',
+        lazy: async () => {
+          const module = await import('../pages/HomePage/HomePage');
+          return { Component: module.default };
+        },
       },
       {
         path: routes.PROFILE,
-        element: <ProfilePage />,
+        id: 'ProfilePage',
+        lazy: async () => {
+          const module = await import('../pages/ProfilePage/ProfilePage');
+          return { Component: module.default };
+        },
       },
       {
         path: routes.POST,
-        element: <PostPage />,
+        id: 'PostPage',
+        lazy: async () => {
+          const module = await import('../pages/PostPage/PostPage');
+          return { Component: module.default };
+        },
       },
       {
         path: routes.POST_DETAIL,
-        element: <PostDetailPage />,
+        id: 'PostDetailPage',
+        lazy: async () => {
+          const [module, { loader }] = await Promise.all([
+            import('../pages/PostDetailPage/PostDetailPage'),
+            import('../posts/loader'),
+          ]);
+          return { Component: module.default, loader };
+        },
       },
       {
         path: routes.MUSIC,
-        element: <MusicPage />,
+        id: 'MusicPage',
+        lazy: async () => {
+          const module = await import('../pages/MusicPage/MusicPage');
+          return { Component: module.default };
+        },
       },
       {
         path: '*',
-        element: <NotFoundPage />,
+        id: 'NotFoundPage',
+        lazy: async () => {
+          const module = await import('../pages/NotFoundPage/NotFoundPage');
+          return { Component: module.default };
+        },
       },
     ],
   },
