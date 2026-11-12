@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Layout from '../../components/Layout';
 import Seo from '../../components/Seo';
 import routes from '../../routes/route';
-import { CATEGORIES, getAllPosts, type Category } from '../../posts';
+import { CATEGORIES, getAllPostSummaries, type Category } from '../../posts';
 import PostListItem from './components/PostListItem';
 import CategoryTab from './components/CategoryTab';
 
@@ -13,7 +13,7 @@ const CATEGORY_COLORS = {
 } as const;
 
 export default function PostPage() {
-  const posts = getAllPosts();
+  const posts = getAllPostSummaries();
   const [selected, setSelected] = useState<Category | null>(null);
   const visiblePosts = selected
     ? posts.filter((post) => post.meta.category === selected)

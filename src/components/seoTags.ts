@@ -1,7 +1,7 @@
 import { AUTHOR_NAME, OG_IMAGE_URL, SITE_NAME, SITE_URL } from '../site';
 import routes from '../routes/route';
 import seo from '../routes/seo';
-import { getPostById } from '../posts';
+import { getPostSummaryById } from '../posts';
 import { buildJsonLd, type ArticleInfo } from './jsonLd';
 
 export interface SeoData {
@@ -38,7 +38,7 @@ export function resolveSeoData(path: string): SeoData {
   const postPrefix = `${routes.POST}/`;
 
   if (path.startsWith(postPrefix)) {
-    const post = getPostById(path.slice(postPrefix.length));
+    const post = getPostSummaryById(path.slice(postPrefix.length));
     if (!post) return NOT_FOUND;
 
     return {
