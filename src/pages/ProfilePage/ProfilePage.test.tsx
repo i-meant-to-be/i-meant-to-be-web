@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import routeObjects from '../../routes/routes';
 
 describe('ProfilePage', () => {
-  it('renders the profile and resume projects through the shared route definition', () => {
+  it('renders the profile and resume projects through the shared route definition', async () => {
     vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     const router = createMemoryRouter(routeObjects, {
       initialEntries: ['/profile'],
@@ -12,7 +12,7 @@ describe('ProfilePage', () => {
 
     render(<RouterProvider router={router} />);
 
-    const main = screen.getByRole('main');
+    const main = await screen.findByRole('main', {}, { timeout: 10000 });
     expect(main).toHaveClass('select-text');
     expect(within(main).getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(
@@ -54,10 +54,7 @@ describe('ProfilePage', () => {
       schools
         .getAllByRole('listitem')
         .map((item) => item.querySelector('p')?.textContent),
-    ).toEqual([
-      '중앙대학교 소프트웨어학부 · 철학과',
-      '춘천고등학교',
-    ]);
+    ).toEqual(['중앙대학교 소프트웨어학부 · 철학과', '춘천고등학교']);
     const activities = within(screen.getByRole('region', { name: '활동' }));
     const activitiesList = activities.getByRole('list', { name: '활동 목록' });
     expect(

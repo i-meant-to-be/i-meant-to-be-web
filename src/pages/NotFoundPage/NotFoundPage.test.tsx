@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import routeObjects from '../../routes/routes';
 
 describe('NotFoundPage', () => {
-  it('renders for an unknown route and links back to valid pages', () => {
+  it('renders for an unknown route and links back to valid pages', async () => {
     vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
     const router = createMemoryRouter(routeObjects, {
       initialEntries: ['/no-such-page'],
@@ -13,7 +13,7 @@ describe('NotFoundPage', () => {
     render(<RouterProvider router={router} />);
 
     expect(
-      screen.getByRole('heading', {
+      await screen.findByRole('heading', {
         level: 1,
         name: '페이지를 찾을 수 없어요.',
       }),
