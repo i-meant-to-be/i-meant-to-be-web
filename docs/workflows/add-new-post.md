@@ -103,6 +103,9 @@ tags: [<9 — 사용자 확정>]
 frontmatter + 정규화 본문을 `src/posts/content/<id>.md`로 씀 (LF, UTF-8, 끝 개행 1개). 원본
 파일은 건드리지 않음.
 
+파생 메타데이터·본문 청크는 자동 생성 대상임. 별도 파일을 작성하거나 커밋하지 않음
+([`posts.md`](../architecture/posts.md) §1).
+
 ## 11. 검증
 
 ```bash
@@ -114,6 +117,11 @@ npm run build
 
 실패 시 원인 수정. `npm run dev`로 `/post/<id>` 화면을 확인하고, 강조 대상이 실제
 `<strong>`으로 렌더되며 원시 `**` / `***`가 노출되지 않는지 확인함.
+
+새 글이 목록·SEO에 반영되는지 확인함. 프로덕션 빌드의 `/post/<id>/`에 직접 접속해
+프리렌더 본문과 hydration을 확인하고, 목록에서 이동해 해당 글의 본문만 지연 로드하는지
+확인함. 프리렌더·지연 로딩 계약은
+[`routing-and-seo.md`](../architecture/routing-and-seo.md) §7을 따름.
 
 ## 12. 커밋 & PR
 

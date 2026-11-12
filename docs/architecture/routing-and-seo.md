@@ -14,7 +14,7 @@
 | `public/og-image.png`              | 모든 라우트의 `og:image`에 사용하는 공유 미리보기 이미지                                                     |
 | `src/components/jsonLd.ts`         | 라우트별 JSON-LD 그래프 (`BlogPosting`/`WebSite`/`WebPage`/`BreadcrumbList`)                                  |
 | `src/components/Seo.tsx`           | `seoTags.ts`의 결과를 렌더. 프리렌더 중에는 아무것도 렌더하지 않음 (§4)                                       |
-| `src/entry-server.tsx`             | 프리렌더 엔트리. 경로별 `render()`와 sitemap/RSS 생성 함수를 export                                           |
+| `src/entry-server.tsx`             | 프리렌더 엔트리. 경로별 비동기 `render()`와 sitemap/RSS 생성 함수를 export                                           |
 | `src/posts/feed.ts`                | 프리렌더 경로 목록, sitemap XML, 전체 본문 RSS XML                                                            |
 | `scripts/prerender.mjs`            | 모든 라우트를 정적 HTML로 굽고 `dist/404.html`, `dist/sitemap.xml`, `dist/rss.xml`을 씀                       |
 | `scripts/check-post-images.mjs`    | 게시물 이미지 참조 검증 (규칙: [`posts.md`](posts.md) §4-7)                                                   |
@@ -91,7 +91,7 @@ HTTP 404 계약을 따름.
 ## 4-1. 동적 라우트의 SEO
 
 `seo.ts`는 경로 문자열을 key로 쓰는 고정 매핑이라 `/post/:id`에는 쓸 수 없음. 이 분기는
-`seoTags.ts`의 `resolveSeoData(path)`가 담당함 — `/post/`로 시작하면 `getPostById`로 게시물
+`seoTags.ts`의 `resolveSeoData(path)`가 담당함 — `/post/`로 시작하면 `getPostSummaryById`로 게시물
 frontmatter를 읽고, 그 외에는 `seo.ts`를 조회함. 없는 게시물 id와 매핑되지 않은 경로는 404
 전용 SEO 데이터가 됨.
 
@@ -143,3 +143,16 @@ head가 어긋날 수 없음. 동적 라우트는 `seo.ts`에 key를 추가하�
   하고, 버튼 UI가 필요할 때만 `window.open`을 씀.
 - 문장 안에 흐르는 링크에 블록 레벨 요소를 쓰지 않음. 크롤러가 그 경계마다 문장을 끊어 검색
   스니펫이 깨짐 (`src/components/TextButton.tsx`).
+
+## 7. 지연 로딩과 hydration
+
+공통 라우트 정의에 고정 ID와 `lazy` 페이지 모듈을 둠. 상세 loader만 해당 글의 본문을
+로드하며 목록·SEO는 메타데이터만 참조함 (데이터 계약: [`posts.md`](posts.md) §1).
+
+프리렌더는 `createStaticHandler`로 loader를 기다린 뒤 `createStaticRouter`와
+`StaticRouterProvider`로 렌더함. 현재 경로의 loader 데이터만 HTML에 직렬화함.
+프리렌더 중 로딩 오류는 빌드 실패로 처리함. RSS 생성도 비동기 본문 로드를 기다림.
+
+브라우저는 최초 경로의 lazy 모듈을 준비하고 직렬화된 데이터를 재사용하여 hydration함.
+빈 root를 사용하는 개발 환경에서는 초기 loader 완료 후 마운트함. 이동 중 기존 화면을
+유지하고 로딩 상태를 표시하며, 청크·본문 다운로드 실패 시 새로고침 안내를 렌더함.
