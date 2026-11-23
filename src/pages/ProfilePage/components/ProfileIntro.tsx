@@ -32,10 +32,6 @@ export default function ProfileIntro() {
           문제를 해결했습니다.
         </p>
         <div className="hidden mt-3 md:mt-4 md:block space-y-2 md:space-y-3">
-          <p className="font-semibold">
-            안 되면 되게 하면 됩니다. 경계를 넘나드는 접근만이 이를 가능케
-            한다고 생각합니다.
-          </p>
           <p>
             Android에 강한 기반을 둔 개발자로서, 유연하고 확장성이 좋은
             아키텍처를 구성해왔고 비동기/병렬 처리 등을 통한 성능 개선을
